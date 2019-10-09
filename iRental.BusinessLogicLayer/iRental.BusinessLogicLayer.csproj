@@ -10,7 +10,8 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Clients\" />
-    <Folder Include="Interfaces\Repositories\" />
+    <Folder Include="Interfaces\Services\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

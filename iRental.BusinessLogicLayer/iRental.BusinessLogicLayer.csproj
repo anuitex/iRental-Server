@@ -8,4 +8,9 @@
     <ProjectReference Include="..\iRental.Domain\iRental.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\Clients\" />
+    <Folder Include="Interfaces\Repositories\" />
+  </ItemGroup>
+
 </Project>

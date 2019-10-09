@@ -7,7 +7,7 @@ namespace iRental.Domain.Entities
         [FirestoreProperty]
         public string Name { get; set; }
         [FirestoreProperty]
-        public int AdvertType { get; set; }
+        public Enum.Enums.AdvertType AdvertType { get; set; }
         [FirestoreProperty]
         public string CurrencyId { get; set; }
         [FirestoreProperty]
@@ -21,9 +21,9 @@ namespace iRental.Domain.Entities
         [FirestoreProperty]
         public int CountBathrooms { get; set; }
         [FirestoreProperty]
-        public int[] ComfortOptions { get; set; }
+        public Enum.Enums.AdvertComfort[] ComfortOptions { get; set; }
         [FirestoreProperty]
-        public string[] Photos { get; set; }
+        public string[] PhotoIds { get; set; }
         [FirestoreProperty]
         public string Description { get; set; }
         [FirestoreProperty]

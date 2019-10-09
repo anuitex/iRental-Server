@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\iRental.BusinessLogicLayer\iRental.BusinessLogicLayer.csproj" />
-    <ProjectReference Include="..\iRental.Clients\iRental.Clients.csproj" />
     <ProjectReference Include="..\iRental.Repository.Firestore\iRental.Repository.Firestore.csproj" />
   </ItemGroup>
 

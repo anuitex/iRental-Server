@@ -8,4 +8,8 @@
     <PackageReference Include="Google.Cloud.Firestore" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\iRental.Common\iRental.Common.csproj" />
+  </ItemGroup>
+
 </Project>

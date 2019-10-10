@@ -1,6 +1,6 @@
 ﻿using iRental.BusinessLogicLayer.Interfaces;
 using iRental.Domain.Entities;
-using iRental.ViewModel.ViewModels;
+using iRental.ViewModel.OutputModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +25,5 @@ namespace iRental.BusinessLogicLayer.Services
             });
             return advartsViewModels;
         }
-
-        public async Task<>
     }
 }

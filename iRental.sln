@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRental.ViewModel", "iRenta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRental.Client", "iRental.Client\iRental.Client.csproj", "{4960E8C1-3AF4-4A34-917C-518580DC9138}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRental.Common", "iRental.Common\iRental.Common.csproj", "{A2FEB3EB-76E3-45D8-B53E-1C5BE85AC5D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{4960E8C1-3AF4-4A34-917C-518580DC9138}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4960E8C1-3AF4-4A34-917C-518580DC9138}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4960E8C1-3AF4-4A34-917C-518580DC9138}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2FEB3EB-76E3-45D8-B53E-1C5BE85AC5D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2FEB3EB-76E3-45D8-B53E-1C5BE85AC5D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2FEB3EB-76E3-45D8-B53E-1C5BE85AC5D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2FEB3EB-76E3-45D8-B53E-1C5BE85AC5D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{CFBCD46F-0A31-41D3-9A32-2732137CBE6B} = {8E743F9C-4DC2-4BE9-8AAC-D16BA8B2F33C}
 		{B35FF444-6156-4CA4-AD1A-1981001C4959} = {7DD3410C-6642-468B-B946-2A930BDE13BB}
 		{4960E8C1-3AF4-4A34-917C-518580DC9138} = {8E743F9C-4DC2-4BE9-8AAC-D16BA8B2F33C}
+		{A2FEB3EB-76E3-45D8-B53E-1C5BE85AC5D7} = {7DD3410C-6642-468B-B946-2A930BDE13BB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61798F88-F126-4B47-84F4-1A4A059DEED6}

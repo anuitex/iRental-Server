@@ -1,4 +1,4 @@
-﻿namespace iRental.Domain.Enum
+﻿namespace iRental.Common.Enum
 {
     public partial class Enums
     {

@@ -1,4 +1,5 @@
 ﻿using Google.Cloud.Firestore;
+using iRental.Common.Enum;
 
 namespace iRental.Domain.Entities
 {
@@ -7,7 +8,7 @@ namespace iRental.Domain.Entities
         [FirestoreProperty]
         public string Name { get; set; }
         [FirestoreProperty]
-        public Enum.Enums.AdvertType AdvertType { get; set; }
+        public Enums.AdvertSalesType AdvertType { get; set; }
         [FirestoreProperty]
         public string CurrencyId { get; set; }
         [FirestoreProperty]
@@ -21,7 +22,7 @@ namespace iRental.Domain.Entities
         [FirestoreProperty]
         public int CountBathrooms { get; set; }
         [FirestoreProperty]
-        public Enum.Enums.AdvertComfort[] ComfortOptions { get; set; }
+        public Enums.AdvertComfort[] ComfortOptions { get; set; }
         [FirestoreProperty]
         public string[] PhotoIds { get; set; }
         [FirestoreProperty]

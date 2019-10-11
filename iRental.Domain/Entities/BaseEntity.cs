@@ -3,10 +3,9 @@ using System;
 
 namespace iRental.Domain.Entities
 {
-    [FirestoreData]
-    public class BaseEntity
+    public abstract class BaseEntity
     {
-        [FirestoreProperty, FirestoreDocumentId]
+        [FirestoreDocumentId]
         public string Id { get; set; }
         [FirestoreProperty]
         public DateTime CreatedAt { get; set; }

@@ -17,4 +17,10 @@
     <ProjectReference Include="..\iRental.Repository.Firestore\iRental.Repository.Firestore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="iRentalServiceAccount.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

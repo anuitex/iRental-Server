@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "iRental.Repository.Firestore.Test": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "iRentalServiceAccount.json"
+      }
+    }
+  }
+}

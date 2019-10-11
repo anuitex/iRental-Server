@@ -20,8 +20,10 @@ namespace iRental.BusinessLogicLayer.Services
 
         public async Task CreateAsync(AdvertCreateRequest request)
         {
+            /*
             var advert =
             _dbContext.Adverts.CreateAsync();
+            */
         }
 
         public async Task<IEnumerable<AdvertListResponse>> GetAllAsync()

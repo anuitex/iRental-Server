@@ -4,6 +4,7 @@ using System;
 
 namespace iRental.Domain.Entities.User
 {
+    [FirestoreData]
     public class UserEntity : BaseEntity
     {
         [FirestoreProperty]
@@ -27,7 +28,7 @@ namespace iRental.Domain.Entities.User
         [FirestoreProperty]
         public string Address { get; set; }
         [FirestoreProperty]
-        public string NumberHouse { get; set; }
+        public int NumberAddressHouse { get; set; }
         [FirestoreProperty]
         public float Rating { get; set; }
         [FirestoreProperty]

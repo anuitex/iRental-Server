@@ -2,6 +2,7 @@
 
 namespace iRental.Domain.Entities
 {
+    [FirestoreData]
     public class CurrencyEntity : BaseEntity
     {
         [FirestoreProperty]

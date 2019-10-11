@@ -1,7 +1,8 @@
 ﻿using iRental.Common.Enum;
 using iRental.Domain.Entities.User;
-using iRental.Repository.Repositories;
+using iRental.Repository.Firestore.Repositories;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -33,7 +34,7 @@ namespace iRental.Repository.Firestore.Test.Repositories
                 Address = "adrs",
                 NumberAddressHouse = 1
             };
-            user.Favorites = new UserFaforiteEntity { UserId = user.Id };
+            user.AdvertFavoritesIds.ToList().Add("");
 
             await _baseTestedRepository.CreateAsync(user);
         }
@@ -62,7 +63,6 @@ namespace iRental.Repository.Firestore.Test.Repositories
             var user = await _baseTestedRepository.FindByIdAsync("19ed68f1-6da3-43bf-abb8-2614434269ec");
             user.LastName = "UpdNam";
             await _baseTestedRepository.UpdateAsync(user);
-            var updatedUser = await _baseTestedRepository.FindByIdAsync(user.Id);
         }
     }
 }

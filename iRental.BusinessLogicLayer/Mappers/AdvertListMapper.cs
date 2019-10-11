@@ -8,7 +8,7 @@ namespace iRental.BusinessLogicLayer.Mappers
         public static AdvertListResponse Map(AdvertEntity entity)
         {
             var mappedModel = new AdvertListResponse();
-            mappedModel.Id = entity.Id;
+            mappedModel.AdvertId = entity.Id;
             mappedModel.Title = entity.Title;
             mappedModel.Address = entity.Address;
             mappedModel.Price = $"{entity.CurrencyName} {entity.Price}";

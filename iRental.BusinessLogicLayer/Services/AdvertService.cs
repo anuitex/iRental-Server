@@ -1,6 +1,8 @@
 ﻿using iRental.BusinessLogicLayer.Interfaces;
 using iRental.BusinessLogicLayer.Mappers;
+using iRental.BusinessLogicLayer.Mappers.EntityMapper;
 using iRental.ViewModel.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,15 +20,15 @@ namespace iRental.BusinessLogicLayer.Services
         }
 
 
-        public async Task CreateAsync(AdvertCreateRequest request)
+        public async Task CreateAsync(AdvertCreateRequest request, string userId)
         {
-            /*
-            var advert =
-            _dbContext.Adverts.CreateAsync();
-            */
+            var newAdvert = AdvertMapper.Map(request);
+            newAdvert.UserId = userId;
+
+            await _dbContext.Adverts.CreateAsync(newAdvert);
         }
 
-        public async Task<IEnumerable<AdvertListResponse>> GetAllAsync()
+        public async Task<IEnumerable<AdvertListResponse>> GetAllForUserAsync(string userId)
         {
             var adverts = await _dbContext.Adverts.GetAllAsync();
             var advertsViewModels = adverts.Select(advart => AdvertListMapper.Map(advart));

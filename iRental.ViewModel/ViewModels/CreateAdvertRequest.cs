@@ -20,7 +20,7 @@ namespace iRental.ViewModel.ViewModels
         public int CountBeds { get; set; }
         public int CountRooms { get; set; }
         public int CountBathrooms { get; set; }
-        public Enums.AdvertComfort[] AdvertComforts { get; set; }
+        public IEnumerable<Enums.AdvertComfort> AdvertComforts { get; set; }
         public string Description { get; set; }
 
         public AdvertCreateRequest()

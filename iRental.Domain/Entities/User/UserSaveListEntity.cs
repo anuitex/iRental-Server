@@ -2,6 +2,7 @@
 
 namespace iRental.Domain.Entities.User
 {
+    [FirestoreData]
     public class UserSaveListEntity : BaseEntity
     {
         [FirestoreProperty]

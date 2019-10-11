@@ -1,6 +1,6 @@
 ﻿using iRental.Domain.Entities;
 using iRental.Domain.Entities.User;
-using iRental.Repository.Repositories;
+using iRental.Repository.Firestore.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;

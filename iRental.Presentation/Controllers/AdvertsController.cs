@@ -20,9 +20,10 @@ namespace iRental.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<AdvertListResponse>> GetAllAsync()
+        public async Task<IEnumerable<AdvertListResponse>> GetAllForUserAsync()
         {
-            var response = await _advertService.GetAllAsync();
+            string userId = "";
+            var response = await _advertService.GetAllForUserAsync(userId);
             return response;
         }
 
@@ -37,7 +38,8 @@ namespace iRental.Presentation.Controllers
         [HttpPut]
         public async Task CreateAsync(AdvertCreateRequest requst)
         {
-            await _advertService.CreateAsync(requst);
+            string userId = "";
+            await _advertService.CreateAsync(requst, userId);
         }
     }
 }

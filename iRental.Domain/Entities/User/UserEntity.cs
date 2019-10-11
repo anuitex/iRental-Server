@@ -1,6 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using iRental.Common.Enum;
 using System;
+using System.Collections.Generic;
 
 namespace iRental.Domain.Entities.User
 {
@@ -34,9 +35,13 @@ namespace iRental.Domain.Entities.User
         [FirestoreProperty]
         public int CountRated { get; set; }
         [FirestoreProperty]
-        public string AvatarId { get; set; }
-        public PhotoEntity Avatar { get; set; }
+        public IEnumerable<string> AdvertFavoritesIds { get; set; }
         [FirestoreProperty]
-        public UserFaforiteEntity Favorites { get; set; }
+        public PhotoEntity Avatar { get; set; }
+
+        public UserEntity()
+        {
+            AdvertFavoritesIds = new List<string>();
+        }
     }
 }

@@ -27,11 +27,17 @@ namespace iRental.Presentation.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<AdvertItemResponse> FindById([FromRoute] string id)
+        public async Task<AdvertItemResponse> GetMoreByIdAsync([FromRoute] string id)
         {
             string userId = "";
-            var response = await _advertService.FindByIdAsync(id, userId);
+            var response = await _advertService.GetMoreByIdAsync(id, userId);
             return response;
+        }
+
+        [HttpPut]
+        public async Task CreateAsync(AdvertCreateRequest requst)
+        {
+            await _advertService.CreateAsync(requst);
         }
     }
 }

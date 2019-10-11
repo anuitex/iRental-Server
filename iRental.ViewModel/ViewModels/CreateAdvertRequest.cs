@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace iRental.ViewModel.ViewModels
 {
-    public class CreateAdvertRequest
+    public class AdvertCreateRequest
     {
         public IFormFile MainPhoto { get; set; }
         public List<IFormFile> Photos { get; set; }
@@ -12,7 +12,8 @@ namespace iRental.ViewModel.ViewModels
         public Enums.AdvertSalesType SaleType { get; set; }
         public Enums.AdvertHouseType HouseType { get; set; }
         public string CurrencyName { get; set; }
-        public string Price { get; set; }
+        public int Price { get; set; }
+        public int Area { get; set; }
         public string Address { get; set; }
         public double Lat { get; set; }
         public double Lng { get; set; }
@@ -22,7 +23,7 @@ namespace iRental.ViewModel.ViewModels
         public Enums.AdvertComfort[] AdvertComforts { get; set; }
         public string Description { get; set; }
 
-        public CreateAdvertRequest()
+        public AdvertCreateRequest()
         {
             Photos = new List<IFormFile>();
         }

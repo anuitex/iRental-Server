@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using iRental.BusinessLogicLayer.DependencyInjection;
+using iRental.Presentation.Setups;
+using iRental.Repository.Firestore.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace iRental.Presentation
 {
@@ -25,12 +29,26 @@ namespace iRental.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRepositories();
+            services.AddServices();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            // Add OpenAPI/Swagger document
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v0.0.1", new Info { Title = "iRental Api", Version = "v0.0.1" });
+                c.DescribeAllEnumsAsStrings();
+                c.MapType<Guid>(() => new Schema { Type = "string", Format = "uuid", Example = Guid.Empty });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //todo: add logger
+            //ExceptionHandlerSetup.Setup();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -43,6 +61,13 @@ namespace iRental.Presentation
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            // Add OpenAPI/Swagger middlewares
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v0.0.1/swagger.json", "Loyalty");
+            });
         }
     }
 }

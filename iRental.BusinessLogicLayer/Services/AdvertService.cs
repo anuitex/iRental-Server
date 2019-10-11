@@ -17,6 +17,13 @@ namespace iRental.BusinessLogicLayer.Services
             _dbContext = dbContext;
         }
 
+
+        public async Task CreateAsync(AdvertCreateRequest request)
+        {
+            var advert =
+            _dbContext.Adverts.CreateAsync();
+        }
+
         public async Task<IEnumerable<AdvertListResponse>> GetAllAsync()
         {
             var adverts = await _dbContext.Adverts.GetAllAsync();
@@ -24,7 +31,7 @@ namespace iRental.BusinessLogicLayer.Services
             return advertsViewModels;
         }
 
-        public async Task<AdvertItemResponse> FindByIdAsync(string advertId, string userId)
+        public async Task<AdvertItemResponse> GetMoreByIdAsync(string advertId, string userId)
         {
             var advert = await _dbContext.Adverts.FindByIdAsync(advertId);
             var advertViewModel = AdvertItemMapper.Map(advert);

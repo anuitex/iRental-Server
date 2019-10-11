@@ -2,11 +2,11 @@
 
 namespace iRental.Domain.Entities
 {
-    public class UserFavoriteListEntity : BaseEntity
+    public class CurrencyEntity : BaseEntity
     {
         [FirestoreProperty]
         public string Name { get; set; }
         [FirestoreProperty]
-        public string UserId { get; set; }
+        public double Price { get; set; }
     }
 }

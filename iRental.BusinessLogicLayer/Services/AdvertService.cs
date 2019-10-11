@@ -1,6 +1,6 @@
 ﻿using iRental.BusinessLogicLayer.Interfaces;
-using iRental.Domain.Entities;
-using iRental.ViewModel.OutputModels;
+using iRental.BusinessLogicLayer.Mappers;
+using iRental.ViewModel.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,13 +17,32 @@ namespace iRental.BusinessLogicLayer.Services
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<AdvertViewModel>> GetAllAsync()
+        public async Task<IEnumerable<AdvertListResponse>> GetAllAsync()
         {
-            var advarts = await _dbContext.Adverts.GetAllAsync();
-            var advartsViewModels = advarts.Select(advart => new AdvertViewModel
+            var adverts = await _dbContext.Adverts.GetAllAsync();
+            var advertsViewModels = adverts.Select(advart => AdvertListMapper.Map(advart));
+            return advertsViewModels;
+        }
+
+        public async Task<AdvertItemResponse> FindByIdAsync(string advertId, string userId)
+        {
+            var advert = await _dbContext.Adverts.FindByIdAsync(advertId);
+            var advertViewModel = AdvertItemMapper.Map(advert);
+
+            var owner = await _dbContext.Users.FindByIdAsync(userId);
+
+            advertViewModel.Owner = new AdvertOwner
             {
-            });
-            return advartsViewModels;
+                FirstName = owner.FirstName,
+                LastName = owner.LastName,
+                Rating = owner.Rating,
+                CountRated = owner.CountRated,
+                AvatarUrl = owner.Avatar?.Url
+            };
+
+            //todo: set isFavorite for user
+            //todo: get and set photosUrl
+            return advertViewModel;
         }
     }
 }

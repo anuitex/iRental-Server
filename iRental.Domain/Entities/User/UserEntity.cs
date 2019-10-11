@@ -1,8 +1,8 @@
 ﻿using Google.Cloud.Firestore;
-using iRental.Domain.Enum.User;
+using iRental.Common.Enum;
 using System;
 
-namespace iRental.Domain.Entities
+namespace iRental.Domain.Entities.User
 {
     public class UserEntity : BaseEntity
     {
@@ -19,8 +19,6 @@ namespace iRental.Domain.Entities
         [FirestoreProperty]
         public string PasswordHash { get; set; }
         [FirestoreProperty]
-        public string AvatarId { get; set; }
-        [FirestoreProperty]
         public Enums.UserGender GenderType { get; set; }
         [FirestoreProperty]
         public string Country { get; set; }
@@ -30,5 +28,14 @@ namespace iRental.Domain.Entities
         public string Address { get; set; }
         [FirestoreProperty]
         public string NumberHouse { get; set; }
+        [FirestoreProperty]
+        public float Rating { get; set; }
+        [FirestoreProperty]
+        public int CountRated { get; set; }
+        [FirestoreProperty]
+        public string AvatarId { get; set; }
+        public PhotoEntity Avatar { get; set; }
+        [FirestoreProperty]
+        public UserFaforiteEntity Favorites { get; set; }
     }
 }

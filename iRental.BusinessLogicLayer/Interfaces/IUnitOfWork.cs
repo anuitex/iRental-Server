@@ -1,5 +1,6 @@
 ﻿using iRental.BusinessLogicLayer.Interfaces.Repositories;
 using iRental.Domain.Entities;
+using iRental.Domain.Entities.User;
 
 namespace iRental.BusinessLogicLayer.Interfaces
 {

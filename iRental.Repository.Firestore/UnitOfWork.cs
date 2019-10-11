@@ -2,6 +2,7 @@
 using iRental.BusinessLogicLayer.Interfaces;
 using iRental.BusinessLogicLayer.Interfaces.Repositories;
 using iRental.Domain.Entities;
+using iRental.Domain.Entities.User;
 using iRental.Repository.Firestore.Constants;
 using iRental.Repository.Firestore.Options;
 using iRental.Repository.Repositories;

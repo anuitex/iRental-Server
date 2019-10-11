@@ -8,27 +8,29 @@ namespace iRental.Repository.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        protected CollectionReference _collection;
+        protected readonly FirestoreDb _dbContext;
+        private readonly string _collectionName;
 
         public BaseRepository(FirestoreDb dbContext, string collectionName)
         {
-            _collection = dbContext.Collection(collectionName);
+            _dbContext = dbContext;
+            _collectionName = collectionName;
         }
         public async Task CreateAsync(T model)
         {
-            DocumentReference docReference = _collection.Document(model.Id);
-            await docReference.SetAsync(model);
+            DocumentReference docReference = _dbContext.Collection(_collectionName).Document(model.Id);
+            await docReference.CreateAsync(model);
         }
 
         public async Task DeleteByIdAsync(string id)
         {
-            DocumentReference docReference = _collection.Document(id);
+            DocumentReference docReference = _dbContext.Collection(_collectionName).Document(id);
             await docReference.DeleteAsync();
         }
 
         public async Task<T> FindByIdAsync(string id)
         {
-            DocumentReference docReference = _collection.Document(id);
+            DocumentReference docReference = _dbContext.Collection(_collectionName).Document(id);
             DocumentSnapshot snapshot = await docReference.GetSnapshotAsync();
             var result = snapshot.ConvertTo<T>();
             return result;
@@ -36,8 +38,7 @@ namespace iRental.Repository.Repositories
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            Query collectionQuery = _collection;
-            QuerySnapshot allItemsQuerySnapshot = await collectionQuery.GetSnapshotAsync();
+            QuerySnapshot allItemsQuerySnapshot = await _dbContext.Collection(_collectionName).GetSnapshotAsync();
             List<T> itemsResult = new List<T>();
             foreach (DocumentSnapshot documentSnapshot in allItemsQuerySnapshot.Documents)
             {
@@ -48,7 +49,7 @@ namespace iRental.Repository.Repositories
 
         public async Task UpdateAsync(T model)
         {
-            DocumentReference docReference = _collection.Document(model.Id);
+            DocumentReference docReference = _dbContext.Collection(_collectionName).Document(model.Id);
             await docReference.SetAsync(model);
         }
     }

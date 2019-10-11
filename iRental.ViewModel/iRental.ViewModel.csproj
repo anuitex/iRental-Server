@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="RequestModels\" />
+    <Folder Include="ResponseModels\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,10 +1,10 @@
 ﻿using Google.Cloud.Firestore;
 using iRental.BusinessLogicLayer.Interfaces;
 using iRental.BusinessLogicLayer.Interfaces.Repositories;
+using iRental.Common.Constant;
 using iRental.Common.Options;
 using iRental.Domain.Entities;
 using iRental.Domain.Entities.User;
-using iRental.Repository.Firestore.Constant;
 using iRental.Repository.Firestore.Repositories;
 using Microsoft.Extensions.Options;
 using System;

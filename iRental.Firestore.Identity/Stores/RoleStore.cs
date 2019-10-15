@@ -1,7 +1,7 @@
 ﻿using Google.Cloud.Firestore;
+using iRental.Common.Constant;
 using iRental.Common.Options;
 using iRental.Domain.Identities;
-using iRental.Repository.Firestore.Constant;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System;

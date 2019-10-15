@@ -1,4 +1,5 @@
-﻿using iRental.Common.Enum;
+﻿using iRental.Common.Constant;
+using iRental.Common.Enum;
 using iRental.Domain.Entities.User;
 using iRental.Repository.Firestore.Repositories;
 using System;
@@ -14,7 +15,7 @@ namespace iRental.Repository.Firestore.Test.Repositories
 
         public UserRepositoryTest()
         {
-            _baseTestedRepository = new BaseRepository<UserEntity>(_firestoreContext, Constant.Constants.Collections.User);
+            _baseTestedRepository = new BaseRepository<UserEntity>(_firestoreContext, Constants.Collections.User);
         }
 
         [Fact]

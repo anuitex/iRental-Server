@@ -1,4 +1,5 @@
-﻿using iRental.Common.Enum;
+﻿using iRental.Common.Constant;
+using iRental.Common.Enum;
 using iRental.Domain.Entities;
 using iRental.Repository.Firestore.Constant;
 using iRental.Repository.Firestore.Repositories;

@@ -13,15 +13,9 @@ namespace iRental.Domain.Identities
         [FirestoreProperty]
         public string NormalizedUserName { get; set; }
         [FirestoreProperty]
-        public string Email { get; set; }
-        [FirestoreProperty]
         public string NormalizedEmail { get; set; }
         [FirestoreProperty]
         public bool EmailConfirmed { get; set; }
-        [FirestoreProperty]
-        public string PasswordHash { get; set; }
-        [FirestoreProperty]
-        public string PhoneNumber { get; set; }
         [FirestoreProperty]
         public bool PhoneNumberConfirmed { get; set; }
         [FirestoreProperty]

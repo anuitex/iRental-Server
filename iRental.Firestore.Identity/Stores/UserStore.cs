@@ -1,7 +1,8 @@
 ﻿using Google.Cloud.Firestore;
+using iRental.Common.Constant;
 using iRental.Common.Options;
+using iRental.Domain.Entities.User;
 using iRental.Domain.Identities;
-using iRental.Repository.Firestore.Constant;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System;
@@ -101,10 +102,11 @@ namespace iRental.Firestore.Identity.Stores
             return user;
         }
 
-        public Task<string> GetEmailAsync(UserIdentity user, CancellationToken cancellationToken)
+        public async Task<string> GetEmailAsync(UserIdentity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(user.Email);
+            var userEntity = await GetUserEntity(user.UserId, cancellationToken);
+            return userEntity.Email;
         }
 
         public Task<bool> GetEmailConfirmedAsync(UserIdentity user, CancellationToken cancellationToken)
@@ -125,16 +127,18 @@ namespace iRental.Firestore.Identity.Stores
             return Task.FromResult(user.NormalizedUserName);
         }
 
-        public Task<string> GetPasswordHashAsync(UserIdentity user, CancellationToken cancellationToken)
+        public async Task<string> GetPasswordHashAsync(UserIdentity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(user.PasswordHash);
+            var userEnitity = await GetUserEntity(user.UserId, cancellationToken);
+            return userEnitity.PasswordHash;
         }
 
-        public Task<string> GetPhoneNumberAsync(UserIdentity user, CancellationToken cancellationToken)
+        public async Task<string> GetPhoneNumberAsync(UserIdentity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(user.PhoneNumber);
+            var userEnitity = await GetUserEntity(user.UserId, cancellationToken);
+            return userEnitity.PhoneNumber;
         }
 
         public Task<bool> GetPhoneNumberConfirmedAsync(UserIdentity user, CancellationToken cancellationToken)
@@ -178,11 +182,14 @@ namespace iRental.Firestore.Identity.Stores
             return users;
         }
 
-        public Task<bool> HasPasswordAsync(UserIdentity user, CancellationToken cancellationToken)
+        public async Task<bool> HasPasswordAsync(UserIdentity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            bool hasPassword = !string.IsNullOrEmpty(user.PasswordHash);
-            return Task.FromResult(hasPassword);
+
+            var userEnitity = await GetUserEntity(user.UserId, cancellationToken);
+
+            bool hasPassword = !string.IsNullOrEmpty(userEnitity.PasswordHash);
+            return hasPassword;
         }
 
         public Task<bool> IsInRoleAsync(UserIdentity user, string roleName, CancellationToken cancellationToken)
@@ -198,11 +205,14 @@ namespace iRental.Firestore.Identity.Stores
             await _dbContext.Collection(Constants.Collections.UserIdentity).Document(user.UserId).SetAsync(user, cancellationToken: cancellationToken);
         }
 
-        public Task SetEmailAsync(UserIdentity user, string email, CancellationToken cancellationToken)
+        public async Task SetEmailAsync(UserIdentity user, string email, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            user.Email = email;
-            return Task.CompletedTask;
+
+            var userEntity = await GetUserEntity(user.UserId, cancellationToken);
+
+            userEntity.Email = email;
+            await SaveUserEntity(userEntity, cancellationToken);
         }
 
         public Task SetEmailConfirmedAsync(UserIdentity user, bool confirmed, CancellationToken cancellationToken)
@@ -226,18 +236,20 @@ namespace iRental.Firestore.Identity.Stores
             return Task.CompletedTask;
         }
 
-        public Task SetPasswordHashAsync(UserIdentity user, string passwordHash, CancellationToken cancellationToken)
+        public async Task SetPasswordHashAsync(UserIdentity user, string passwordHash, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            user.PasswordHash = passwordHash;
-            return Task.CompletedTask;
+            var userEntity = await GetUserEntity(user.UserId, cancellationToken);
+            userEntity.PasswordHash = passwordHash;
+            await SaveUserEntity(userEntity, cancellationToken);
         }
 
-        public Task SetPhoneNumberAsync(UserIdentity user, string phoneNumber, CancellationToken cancellationToken)
+        public async Task SetPhoneNumberAsync(UserIdentity user, string phoneNumber, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            user.PhoneNumber = phoneNumber;
-            return Task.CompletedTask;
+            var userEntity = await GetUserEntity(user.UserId, cancellationToken);
+            userEntity.PhoneNumber = phoneNumber;
+            await SaveUserEntity(userEntity, cancellationToken);
         }
 
         public Task SetPhoneNumberConfirmedAsync(UserIdentity user, bool confirmed, CancellationToken cancellationToken)
@@ -269,5 +281,25 @@ namespace iRental.Firestore.Identity.Stores
 
             return IdentityResult.Success;
         }
+
+        #region helpers
+
+        private async Task<UserEntity> GetUserEntity(string userId, CancellationToken cancellationToken)
+        {
+            var docRef = await _dbContext.Collection(Constants.Collections.User)
+                .Document(userId)
+                .GetSnapshotAsync(cancellationToken);
+            var userEnitity = docRef.ConvertTo<UserEntity>();
+            return userEnitity;
+        }
+
+        private async Task SaveUserEntity(UserEntity userEntity, CancellationToken cancellationToken)
+        {
+            await _dbContext.Collection(Constants.Collections.User)
+                .Document(userEntity.Id)
+                .SetAsync(userEntity, cancellationToken: cancellationToken);
+        }
+
+        #endregion
     }
 }

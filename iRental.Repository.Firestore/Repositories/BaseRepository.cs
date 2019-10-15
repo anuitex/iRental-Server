@@ -16,6 +16,7 @@ namespace iRental.Repository.Firestore.Repositories
             _dbContext = dbContext;
             _collectionName = collectionName;
         }
+
         public virtual async Task CreateAsync(T model)
         {
             DocumentReference docReference = _dbContext.Collection(_collectionName).Document(model.Id);

@@ -1,4 +1,4 @@
-﻿namespace iRental.Repository.Firestore.Options
+﻿namespace iRental.Common.Options
 {
     public class FirestoreOptions
     {

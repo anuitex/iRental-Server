@@ -35,7 +35,7 @@ namespace iRental.Domain.Entities.User
         [FirestoreProperty]
         public int CountRated { get; set; }
         [FirestoreProperty]
-        public IEnumerable<string> AdvertFavoritesIds { get; set; }
+        public List<string> AdvertFavoritesIds { get; set; }
         [FirestoreProperty]
         public PhotoEntity Avatar { get; set; }
 

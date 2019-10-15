@@ -54,13 +54,15 @@ namespace iRental.Repository.Firestore.Test.Repositories
         [Fact]
         public async Task DeleteByIdAsyncTest()
         {
-            await _baseTestedRepository.DeleteByIdAsync("19ed68f1-6da3-43bf-abb8-2614434269ec");
+            var advertId = "19ed68f1-6da3-43bf-abb8-2614434269ec";
+            await _baseTestedRepository.DeleteByIdAsync(advertId);
         }
 
         [Fact]
         public async Task UpdateAsyncTest()
         {
-            var user = await _baseTestedRepository.FindByIdAsync("19ed68f1-6da3-43bf-abb8-2614434269ec");
+            var advertId = "19ed68f1-6da3-43bf-abb8-2614434269ec";
+            var user = await _baseTestedRepository.FindByIdAsync(advertId);
             user.LastName = "UpdNam";
             await _baseTestedRepository.UpdateAsync(user);
         }

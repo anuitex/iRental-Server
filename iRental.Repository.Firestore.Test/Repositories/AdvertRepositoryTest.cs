@@ -2,14 +2,16 @@
 using iRental.Domain.Entities;
 using iRental.Repository.Firestore.Repositories;
 using System.Threading.Tasks;
+using System.Linq;
 using Xunit;
+using System.Collections.Generic;
+using System;
 
 namespace iRental.Repository.Firestore.Test.Repositories
 {
     public class AdvertRepositoryTest : BaseRepositoryTest
     {
         public AdvertRepository _advertTestedRepository;
-        private const string _advertId = "";
 
         public AdvertRepositoryTest()
         {
@@ -21,17 +23,22 @@ namespace iRental.Repository.Firestore.Test.Repositories
         {
             var advert = new AdvertEntity()
             {
-                Title = "",
+                Title = "title3",
                 SaleType = Enums.AdvertSalesType.Rent,
                 HouseType = Enums.AdvertHouseType.House,
-                CurrencyName = "",
+                CurrencyName = "USD",
                 Price = 11.0f,
                 GeoPosition = new Google.Cloud.Firestore.GeoPoint(0, 0),
                 Address = "",
-                Description = "DEsc",
+                Description = "Desc",
                 Area = 10,
                 UserId = "c98ae5bd-01a8-4a3d-9f69-da0e05bb242c"
             };
+
+            advert.PhotoIds.Add(Guid.NewGuid().ToString());
+
+            advert.ComfortOptions.Add(Enums.AdvertComfort.Gas);
+            advert.ComfortOptions.Add(Enums.AdvertComfort.Lift);
 
             await _advertTestedRepository.CreateAsync(advert);
         }
@@ -52,20 +59,24 @@ namespace iRental.Repository.Firestore.Test.Repositories
         [Fact]
         public async Task FindByIdAsyncTest()
         {
-            var advert = await _advertTestedRepository.FindByIdAsync(_advertId);
-        }
-
-        [Fact]
-        public async Task DeleteByIdAsyncTest()
-        {
-            await _advertTestedRepository.DeleteByIdAsync(_advertId);
+            string advertId = "52d7c9fa-ac70-426f-b922-2e48abdd43a0";
+            var advert = await _advertTestedRepository.FindByIdAsync(advertId);
         }
 
         [Fact]
         public async Task UpdateAsyncTest()
         {
-            var advert = await _advertTestedRepository.FindByIdAsync(_advertId);
+            string advertId = "d27bb851-889b-4f20-bea9-8d5f3dd4e42e";
+            var advert = await _advertTestedRepository.FindByIdAsync(advertId);
+            advert.Title = "Custom";
             await _advertTestedRepository.UpdateAsync(advert);
+        }
+
+        [Fact]
+        public async Task DeleteByIdAsyncTest()
+        {
+            string advertId = "d27bb851-889b-4f20-bea9-8d5f3dd4e42e";
+            await _advertTestedRepository.DeleteByIdAsync(advertId);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace iRental.BusinessLogicLayer.Mappers.EntityMapper
                 CountBeds = request.CountBeds,
                 CountBathrooms = request.CountBathrooms,
                 CountRooms = request.CountRooms,
-                ComfortOptions = request.AdvertComforts.ToList(),
+                ComfortOptions = request.AdvertComforts,
                 Description = request.Description
             };
 

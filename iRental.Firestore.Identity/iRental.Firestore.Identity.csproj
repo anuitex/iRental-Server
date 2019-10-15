@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\iRental.Common\iRental.Common.csproj" />
+    <ProjectReference Include="..\iRental.Domain\iRental.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,7 +14,7 @@ namespace iRental.Repository.Firestore.Test.Repositories
 
         public UserRepositoryTest()
         {
-            _baseTestedRepository = new BaseRepository<UserEntity>(_firestoreContext, Constants.Constants.Collections.User);
+            _baseTestedRepository = new BaseRepository<UserEntity>(_firestoreContext, Constant.Constants.Collections.User);
         }
 
         [Fact]

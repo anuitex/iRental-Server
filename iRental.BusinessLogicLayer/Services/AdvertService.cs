@@ -1,6 +1,5 @@
 ﻿using iRental.BusinessLogicLayer.Interfaces;
 using iRental.BusinessLogicLayer.Mappers;
-using iRental.BusinessLogicLayer.Mappers.EntityMapper;
 using iRental.ViewModel.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -35,10 +34,10 @@ namespace iRental.BusinessLogicLayer.Services
             return advertsViewModels;
         }
 
-        public async Task<AdvertItemResponse> GetMoreByIdAsync(string advertId, string userId)
+        public async Task<AdvertsDetailsResponse> GetMoreByIdAsync(string advertId, string userId)
         {
             var advert = await _dbContext.Adverts.FindByIdAsync(advertId);
-            var advertViewModel = AdvertItemMapper.Map(advert);
+            var advertViewModel = AdvertDetailsMapper.Map(advert);
 
             var owner = await _dbContext.Users.FindByIdAsync(userId);
 

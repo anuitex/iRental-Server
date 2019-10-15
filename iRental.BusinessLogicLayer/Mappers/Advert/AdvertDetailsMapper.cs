@@ -3,11 +3,11 @@ using iRental.ViewModel.ViewModels;
 
 namespace iRental.BusinessLogicLayer.Mappers
 {
-    public static class AdvertItemMapper
+    public static class AdvertDetailsMapper
     {
-        public static AdvertItemResponse Map(AdvertEntity entity)
+        public static AdvertsDetailsResponse Map(AdvertEntity entity)
         {
-            var viewModel = new AdvertItemResponse();
+            var viewModel = new AdvertsDetailsResponse();
 
             viewModel.Id = entity.Id;
             viewModel.Title = entity.Title;

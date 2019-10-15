@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using iRental.BusinessLogicLayer.DependencyInjection;
-using iRental.Firestore.Identity.Identities;
+﻿using iRental.BusinessLogicLayer.DependencyInjection;
+using iRental.BusinessLogicLayer.Options;
+using iRental.Domain.Identities;
 using iRental.Firestore.Identity.Stores;
 using iRental.Repository.Firestore.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 
 namespace iRental.Presentation
 {
@@ -32,11 +28,28 @@ namespace iRental.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<JwtAuthOption>(Configuration.GetSection("JwtAuthOptions"));
+
             services.AddTransient<IUserStore<UserIdentity>, UserStore>();
             services.AddTransient<IRoleStore<RoleIdentity>, RoleStore>();
 
             services.AddIdentity<UserIdentity, RoleIdentity>()
                 .AddDefaultTokenProviders();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var jwtAuthConfig = serviceProvider.GetRequiredService<IOptions<JwtAuthOption>>().Value;
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = jwtAuthConfig.GetTokenValidationParameters();
+            });
 
             services.AddRepositories();
             services.AddServices();
@@ -68,6 +81,7 @@ namespace iRental.Presentation
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
 

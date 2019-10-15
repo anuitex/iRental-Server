@@ -1,4 +1,4 @@
-﻿namespace iRental.Repository.Firestore.Constants
+﻿namespace iRental.Repository.Firestore.Constant
 {
     public partial class Constants
     {

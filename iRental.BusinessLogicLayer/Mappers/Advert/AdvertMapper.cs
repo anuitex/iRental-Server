@@ -2,7 +2,7 @@
 using iRental.ViewModel.ViewModels;
 using System.Linq;
 
-namespace iRental.BusinessLogicLayer.Mappers.EntityMapper
+namespace iRental.BusinessLogicLayer.Mappers
 {
     public static class AdvertMapper
     {

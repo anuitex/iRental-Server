@@ -1,9 +1,11 @@
-﻿namespace iRental.ViewModel.ViewModels
+﻿using System.Collections.Generic;
+
+namespace iRental.ViewModel.ViewModels
 {
-    public class AdvertItemResponse
+    public class AdvertsDetailsResponse
     {
         public string Id { get; set; }
-        public string[] PhotosUrl { get; set; }
+        public IEnumerable<string> PhotosUrl { get; set; }
         public bool IsFavorite { get; set; }
         public string Title { get; set; }
         public string Address { get; set; }
@@ -15,7 +17,7 @@
 
         public AdvertOwner Owner { get; set; }
 
-        public AdvertItemResponse()
+        public AdvertsDetailsResponse()
         {
             Owner = new AdvertOwner();
         }

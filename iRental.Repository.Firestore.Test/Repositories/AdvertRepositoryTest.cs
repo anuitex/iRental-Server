@@ -1,11 +1,10 @@
 ﻿using iRental.Common.Enum;
 using iRental.Domain.Entities;
+using iRental.Repository.Firestore.Constant;
 using iRental.Repository.Firestore.Repositories;
-using System.Threading.Tasks;
-using System.Linq;
-using Xunit;
-using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace iRental.Repository.Firestore.Test.Repositories
 {
@@ -15,7 +14,7 @@ namespace iRental.Repository.Firestore.Test.Repositories
 
         public AdvertRepositoryTest()
         {
-            _advertTestedRepository = new AdvertRepository(_firestoreContext, Constants.Constants.Collections.Advert);
+            _advertTestedRepository = new AdvertRepository(_firestoreContext, Constants.Collections.Advert);
         }
 
         [Fact]

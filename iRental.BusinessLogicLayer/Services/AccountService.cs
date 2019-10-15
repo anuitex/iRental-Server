@@ -1,4 +1,5 @@
-﻿using iRental.Domain.Identities;
+﻿using iRental.BusinessLogicLayer.Mappers.User;
+using iRental.Domain.Identity;
 using iRental.ViewModel.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,16 +12,18 @@ namespace iRental.BusinessLogicLayer.Services
     public class AccountService
     {
         private readonly UserManager<UserIdentity> _userManager;
+        private readonly SignInManager<UserIdentity> _signInManager;
 
-        public AccountService(UserManager<UserIdentity> userManager)
+        public AccountService(UserManager<UserIdentity> userManager, SignInManager<UserIdentity> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public async Task RegistrateAsync(UserCreateRequest request)
         {
-
-            //await _userManager.CreateAsync(user);
+            var userEntity = UserCreateMapper.Map(request);
+            await _userManager.CreateAsync(userEntity);
         }
 
         public async Task SignIn()

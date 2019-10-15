@@ -1,7 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using System;
 
-namespace iRental.Domain.Identities
+namespace iRental.Domain.Identity
 {
     [FirestoreData]
     public class RoleIdentity

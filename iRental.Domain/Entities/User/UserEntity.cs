@@ -1,19 +1,16 @@
 ﻿using Google.Cloud.Firestore;
 using iRental.Common.Enum;
+using iRental.Domain.Identity;
 using System;
 using System.Collections.Generic;
 
 namespace iRental.Domain.Entities.User
 {
     [FirestoreData]
-    public class UserEntity : BaseEntity
+    public class UserEntity : UserIdentity
     {
         [FirestoreProperty]
         public DateTime Birthday { get; set; }
-        [FirestoreProperty]
-        public string FirstName { get; set; }
-        [FirestoreProperty]
-        public string LastName { get; set; }
         [FirestoreProperty]
         public string PhoneNumber { get; set; }
         [FirestoreProperty]
@@ -28,8 +25,6 @@ namespace iRental.Domain.Entities.User
         public string City { get; set; }
         [FirestoreProperty]
         public string Address { get; set; }
-        [FirestoreProperty]
-        public int NumberAddressHouse { get; set; }
         [FirestoreProperty]
         public float Rating { get; set; }
         [FirestoreProperty]

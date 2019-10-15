@@ -32,8 +32,7 @@ namespace iRental.Repository.Firestore.Test.Repositories
                 GenderType = Enums.UserGender.Male,
                 Country = "Ukr",
                 City = "Kha",
-                Address = "adrs",
-                NumberAddressHouse = 1
+                Address = "adrs"
             };
             user.AdvertFavoritesIds.ToList().Add("");
 

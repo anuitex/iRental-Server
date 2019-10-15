@@ -2,7 +2,7 @@
 using iRental.Common.Constant;
 using iRental.Common.Options;
 using iRental.Domain.Entities.User;
-using iRental.Domain.Identities;
+using iRental.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System;
@@ -124,7 +124,7 @@ namespace iRental.Firestore.Identity.Stores
         public Task<string> GetNormalizedUserNameAsync(UserIdentity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(user.NormalizedUserName);
+            return Task.FromResult($"{user.NormalizedFirstName} {user.NormalizedLastName}");
         }
 
         public async Task<string> GetPasswordHashAsync(UserIdentity user, CancellationToken cancellationToken)
@@ -167,7 +167,7 @@ namespace iRental.Firestore.Identity.Stores
 
         public Task<string> GetUserNameAsync(UserIdentity user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.UserName);
+            return Task.FromResult($"{user.FirstName} {user.LastName}");
         }
 
         public async Task<IList<UserIdentity>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
@@ -232,7 +232,9 @@ namespace iRental.Firestore.Identity.Stores
         public Task SetNormalizedUserNameAsync(UserIdentity user, string normalizedName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            user.NormalizedUserName = normalizedName;
+            var splistString = normalizedName.Split(' ');
+            user.NormalizedFirstName = splistString[0];
+            user.NormalizedLastName = splistString[1];
             return Task.CompletedTask;
         }
 
@@ -269,7 +271,10 @@ namespace iRental.Firestore.Identity.Stores
         public Task SetUserNameAsync(UserIdentity user, string userName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            user.UserName = userName;
+
+            var splistString = userName.Split(' ');
+            user.FirstName = splistString[0];
+            user.LastName = splistString[1];
             return Task.CompletedTask;
         }
 

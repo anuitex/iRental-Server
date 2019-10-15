@@ -1,5 +1,5 @@
 ﻿using iRental.BusinessLogicLayer.Options;
-using iRental.Domain.Identities;
+using iRental.Domain.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -41,7 +41,7 @@ namespace iRental.BusinessLogicLayer.Helpers
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.NormalizedUserName)
+                new Claim(ClaimTypes.Name, $"{user.NormalizedFirstName} ${user.NormalizedLastName}")
             };
 
             foreach (var userRole in userRoles) accessClaims.Add(new Claim(ClaimTypes.Role, userRole));

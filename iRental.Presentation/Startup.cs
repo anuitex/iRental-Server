@@ -1,6 +1,6 @@
 ﻿using iRental.BusinessLogicLayer.DependencyInjection;
 using iRental.BusinessLogicLayer.Options;
-using iRental.Domain.Identities;
+using iRental.Domain.Identity;
 using iRental.Firestore.Identity.Stores;
 using iRental.Repository.Firestore.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

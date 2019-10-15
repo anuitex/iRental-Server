@@ -1,17 +1,21 @@
 ﻿using Google.Cloud.Firestore;
+using iRental.Domain.Entities;
 using System.Collections.Generic;
 
-namespace iRental.Domain.Identities
+namespace iRental.Domain.Identity
 {
-    [FirestoreData]
-    public class UserIdentity
+    public abstract class UserIdentity : BaseEntity
     {
         [FirestoreDocumentId]
         public string UserId { get; set; }
         [FirestoreProperty]
-        public string UserName { get; set; }
+        public string FirstName { get; set; }
         [FirestoreProperty]
-        public string NormalizedUserName { get; set; }
+        public string LastName { get; set; }
+        [FirestoreProperty]
+        public string NormalizedFirstName { get; set; }
+        [FirestoreProperty]
+        public string NormalizedLastName { get; set; }
         [FirestoreProperty]
         public string NormalizedEmail { get; set; }
         [FirestoreProperty]

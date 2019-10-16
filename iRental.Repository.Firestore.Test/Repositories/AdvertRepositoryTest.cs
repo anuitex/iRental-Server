@@ -14,7 +14,7 @@ namespace iRental.Repository.Firestore.Test.Repositories
 
         public AdvertRepositoryTest()
         {
-            _advertTestedRepository = new AdvertRepository(_firestoreContext, Constants.Collections.Advert);
+            _advertTestedRepository = new AdvertRepository(_firestoreContext);
         }
 
         [Fact]

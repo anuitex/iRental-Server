@@ -42,6 +42,7 @@ namespace iRental.Presentation.Controllers
                         new { userId = user.Id, code = codeAcceptEmail },
                         protocol: HttpContext.Request.Scheme);
 
+            //todo: create sender and send code to email
 
             return Ok();
         }
@@ -56,7 +57,6 @@ namespace iRental.Presentation.Controllers
         [HttpPost("sign-in")]
         public async Task<JwtTokensReponse> SignInAsync([FromBody] SignInRequest request)
         {
-
             var jwtTokens = await _accountService.SignInAsync(request);
             return jwtTokens;
         }

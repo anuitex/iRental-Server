@@ -8,6 +8,7 @@ namespace iRental.BusinessLogicLayer.DependencyInjection
         public static void AddServices(this IServiceCollection services)
         {
             services.AddTransient<AdvertService>();
+            services.AddTransient<AccountService>();
         }
     }
 }

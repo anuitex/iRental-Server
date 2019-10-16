@@ -1,7 +1,12 @@
-﻿using iRental.BusinessLogicLayer.DependencyInjection;
+﻿using Google.Cloud.Firestore;
+using Google.Cloud.Firestore.V1;
+using iRental.BusinessLogicLayer.DependencyInjection;
+using iRental.BusinessLogicLayer.Identity;
 using iRental.BusinessLogicLayer.Options;
+using iRental.Common.Options;
+using iRental.Domain.Entities.User;
 using iRental.Domain.Identity;
-using iRental.Firestore.Identity.Stores;
+using iRental.Firestore.Identity.DependencyInjection;
 using iRental.Repository.Firestore.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -29,15 +34,35 @@ namespace iRental.Presentation
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<JwtAuthOption>(Configuration.GetSection("JwtAuthOptions"));
+            services.Configure<FirestoreOptions>(Configuration.GetSection("FirestoreOptions"));
+            var serviceProvider = services.BuildServiceProvider();
 
-            services.AddTransient<IUserStore<UserIdentity>, UserStore>();
-            services.AddTransient<IRoleStore<RoleIdentity>, RoleStore>();
+            var jwtAuthOptions = serviceProvider.GetRequiredService<IOptions<JwtAuthOption>>().Value;
+            var firestoreOptions = serviceProvider.GetRequiredService<IOptions<FirestoreOptions>>().Value;
 
-            services.AddIdentity<UserIdentity, RoleIdentity>()
+            services.AddTransient<FirestoreDb>(_ => {
+                var clientBuilder = new FirestoreClientBuilder() { CredentialsPath = "./iRentalServiceAccount.json" };
+
+                var client = clientBuilder.Build();
+                var dbContext = FirestoreDb.Create(firestoreOptions.ProjectId, client);
+                return dbContext;
+            });
+
+            services.AddRepositories();
+            services.AddManagers();
+
+            services.AddApplicationIdentity();
+            services.AddIdentity<UserEntity, RoleIdentity>(options =>
+            {
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
+            })
+                .AddUserManager<ApplicationUserManager>()
                 .AddDefaultTokenProviders();
 
-            var serviceProvider = services.BuildServiceProvider();
-            var jwtAuthConfig = serviceProvider.GetRequiredService<IOptions<JwtAuthOption>>().Value;
 
             services.AddAuthentication(options =>
             {
@@ -48,10 +73,9 @@ namespace iRental.Presentation
             {
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
-                options.TokenValidationParameters = jwtAuthConfig.GetTokenValidationParameters();
+                options.TokenValidationParameters = jwtAuthOptions.GetTokenValidationParameters();
             });
 
-            services.AddRepositories();
             services.AddServices();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -82,7 +106,7 @@ namespace iRental.Presentation
             }
 
             app.UseAuthentication();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
 
             // Add OpenAPI/Swagger middlewares

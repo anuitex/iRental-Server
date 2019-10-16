@@ -1,10 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using iRental.Common.Constant;
-using iRental.Common.Options;
 using iRental.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,14 +11,9 @@ namespace iRental.Firestore.Identity.Stores
     {
         private readonly FirestoreDb _dbContext;
 
-        public RoleStore(IOptions<FirestoreOptions> options)
+        public RoleStore(FirestoreDb dbContext)
         {
-            if (options.Value == null)
-            {
-                throw new ArgumentNullException("options", "Options can`t be null");
-            }
-
-            _dbContext = FirestoreDb.Create(options.Value.ProjectId);
+            _dbContext = dbContext;
         }
 
         public async Task<IdentityResult> CreateAsync(RoleIdentity role, CancellationToken cancellationToken)
@@ -63,38 +55,40 @@ namespace iRental.Firestore.Identity.Stores
             return role;
         }
 
-        public async Task<string> GetNormalizedRoleNameAsync(RoleIdentity role, CancellationToken cancellationToken)
+        public Task<string> GetNormalizedRoleNameAsync(RoleIdentity role, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return role.NormalizedName;
+            return Task.FromResult(role.NormalizedName);
         }
 
-        public async Task<string> GetRoleIdAsync(RoleIdentity role, CancellationToken cancellationToken)
+        public Task<string> GetRoleIdAsync(RoleIdentity role, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return role.Id;
+            return Task.FromResult(role.Id);
         }
 
-        public async Task<string> GetRoleNameAsync(RoleIdentity role, CancellationToken cancellationToken)
+        public Task<string> GetRoleNameAsync(RoleIdentity role, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return role.Name;
+            return Task.FromResult(role.Name);
         }
 
-        public async Task SetNormalizedRoleNameAsync(RoleIdentity role, string normalizedName, CancellationToken cancellationToken)
+        public Task SetNormalizedRoleNameAsync(RoleIdentity role, string normalizedName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             role.NormalizedName = normalizedName;
+            return Task.CompletedTask;
         }
 
-        public async Task SetRoleNameAsync(RoleIdentity role, string roleName, CancellationToken cancellationToken)
+        public Task SetRoleNameAsync(RoleIdentity role, string roleName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             role.Name = roleName;
+            return Task.CompletedTask;
         }
 
         public async Task<IdentityResult> UpdateAsync(RoleIdentity role, CancellationToken cancellationToken)

@@ -12,11 +12,11 @@ namespace iRental.BusinessLogicLayer.Helpers
     public class JwtManager
     {
         private readonly JwtAuthOption _jwtAuthOptions;
-        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
+        public JwtSecurityTokenHandler JwtSecurityTokenHandler { get; }
 
         public JwtManager(IOptions<JwtAuthOption> jwtAuthOptions)
         {
-            _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             _jwtAuthOptions = jwtAuthOptions.Value;
         }
 
@@ -29,9 +29,8 @@ namespace iRental.BusinessLogicLayer.Helpers
                 notBefore: now,
                 claims: identity.Claims,
                 expires: now.Add(expireTokenMinutes),
-                signingCredentials: new SigningCredentials(_jwtAuthOptions.GetSymmetricSecurityKey(),
-                    SecurityAlgorithms.HmacSha256));
-            var encodedJwt = _jwtSecurityTokenHandler.WriteToken(jwt);
+                signingCredentials: new SigningCredentials(_jwtAuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            var encodedJwt = JwtSecurityTokenHandler.WriteToken(jwt);
             return encodedJwt;
         }
 
@@ -40,14 +39,21 @@ namespace iRental.BusinessLogicLayer.Helpers
             var accessClaims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{user.NormalizedFirstName} ${user.NormalizedLastName}")
             };
 
-            foreach (var userRole in userRoles) accessClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            foreach (var userRole in userRoles)
+            {
+                accessClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
 
-            var accessClaimsIdentity = new ClaimsIdentity(accessClaims, "Token", ClaimsIdentity.DefaultNameClaimType,
+            var accessClaimsIdentity = new ClaimsIdentity(
+                accessClaims,
+                "Token",
+                ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
+
             return GenerateJwt(accessClaimsIdentity, _jwtAuthOptions.AccessTokenExpiration);
         }
 
@@ -56,11 +62,15 @@ namespace iRental.BusinessLogicLayer.Helpers
             var refreshClaims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
-            var accessClaimsIdentity = new ClaimsIdentity(refreshClaims, "Token", ClaimsIdentity.DefaultNameClaimType,
+            var accessClaimsIdentity = new ClaimsIdentity(
+                refreshClaims,
+                "Token",
+                ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
+
             return GenerateJwt(accessClaimsIdentity, _jwtAuthOptions.RefreshTokenExpiration);
         }
     }

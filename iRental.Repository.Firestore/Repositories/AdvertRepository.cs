@@ -1,5 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using iRental.BusinessLogicLayer.Interfaces.Repositories;
+using iRental.Common.Constant;
 using iRental.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace iRental.Repository.Firestore.Repositories
 {
     public class AdvertRepository : BaseRepository<AdvertEntity>, IAdvertRepository
     {
-        public AdvertRepository(FirestoreDb dbContext, string collectionName) : base(dbContext, collectionName)
+        public AdvertRepository(FirestoreDb dbContext) : base(dbContext, Constants.Collections.Advert)
         {
         }
 

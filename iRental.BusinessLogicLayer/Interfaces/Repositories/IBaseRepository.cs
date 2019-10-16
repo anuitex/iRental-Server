@@ -1,10 +1,10 @@
-﻿using iRental.Domain.Entities;
+﻿using iRental.Domain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace iRental.BusinessLogicLayer.Interfaces.Repositories
 {
-    public interface IBaseRepository<T> where T : BaseEntity
+    public interface IBaseRepository<T> where T : IEntity
     {
         Task CreateAsync(T model);
         Task<IEnumerable<T>> GetAllAsync();

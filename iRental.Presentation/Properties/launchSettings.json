@@ -4,24 +4,22 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:50852",
-      "sslPort": 44301
+      "sslPort": 0
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "/",
       "environmentVariables": {
-        "GOOGLE_APPLICATION_CREDENTIALS ": "iRentalServiceAccount.json",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "iRental.Presentation": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

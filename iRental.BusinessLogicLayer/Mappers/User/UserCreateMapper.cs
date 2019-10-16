@@ -14,7 +14,7 @@ namespace iRental.BusinessLogicLayer.Mappers.User
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Birthday = request.Birthday,
+                Birthday = request.Birthday.ToUniversalTime(),
                 PhoneNumber = request.PhoneNumber,
                 Email = request.Email,
                 GenderType = request.Gender,

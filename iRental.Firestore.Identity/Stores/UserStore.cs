@@ -1,11 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using iRental.Common.Constant;
-using iRental.Common.Options;
 using iRental.Domain.Entities.User;
-using iRental.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -13,50 +9,44 @@ using System.Threading.Tasks;
 
 namespace iRental.Firestore.Identity.Stores
 {
-    public class UserStore : IUserStore<UserIdentity>, IUserEmailStore<UserIdentity>, IUserPhoneNumberStore<UserIdentity>,
-        IUserTwoFactorStore<UserIdentity>, IUserPasswordStore<UserIdentity>, IUserRoleStore<UserIdentity>
+    public class UserStore : IUserStore<UserEntity>, IUserEmailStore<UserEntity>, IUserPhoneNumberStore<UserEntity>,
+        IUserTwoFactorStore<UserEntity>, IUserPasswordStore<UserEntity>, IUserRoleStore<UserEntity>
     {
         public readonly FirestoreDb _dbContext;
 
-        public UserStore(IOptions<FirestoreOptions> options)
+        public UserStore(FirestoreDb dbContext)
         {
-            if (options.Value == null)
-            {
-                throw new ArgumentNullException("options", "Options can`t be null");
-            }
-
-            _dbContext = FirestoreDb.Create(options.Value.ProjectId);
+            _dbContext = dbContext;
         }
 
 
-        public async Task AddToRoleAsync(UserIdentity user, string roleName, CancellationToken cancellationToken)
+        public async Task AddToRoleAsync(UserEntity user, string roleName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             user.Roles.Add(roleName);
 
-            await _dbContext.Collection(Constants.Collections.UserIdentity)
-                .Document(user.UserId)
+            await _dbContext.Collection(Constants.Collections.User)
+                .Document(user.Id)
                 .SetAsync(user, cancellationToken: cancellationToken);
         }
 
-        public async Task<IdentityResult> CreateAsync(UserIdentity user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> CreateAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            await _dbContext.Collection(Constants.Collections.UserIdentity)
-                .Document(user.UserId)
+            await _dbContext.Collection(Constants.Collections.User)
+                .Document(user.Id)
                 .CreateAsync(user);
 
             return IdentityResult.Success;
         }
 
-        public async Task<IdentityResult> DeleteAsync(UserIdentity user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> DeleteAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _dbContext.Collection(Constants.Collections.UserIdentity)
-                .Document(user.UserId)
+            await _dbContext.Collection(Constants.Collections.User)
+                .Document(user.Id)
                 .DeleteAsync(cancellationToken: cancellationToken);
 
             return IdentityResult.Success;
@@ -66,170 +56,161 @@ namespace iRental.Firestore.Identity.Stores
         {
         }
 
-        public async Task<UserIdentity> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+        public async Task<UserEntity> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var querySnapshot = await _dbContext.Collection(Constants.Collections.UserIdentity)
+            var querySnapshot = await _dbContext.Collection(Constants.Collections.User)
                 .WhereEqualTo("NormalizedEmail", normalizedEmail)
                 .GetSnapshotAsync(cancellationToken);
 
-            var user = querySnapshot.Documents.Select(doc => doc.ConvertTo<UserIdentity>()).FirstOrDefault();
+            var user = querySnapshot.Documents.Select(doc => doc.ConvertTo<UserEntity>()).FirstOrDefault();
             return user;
         }
 
-        public async Task<UserIdentity> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public async Task<UserEntity> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var docRef = await _dbContext.Collection(Constants.Collections.UserIdentity)
+            var docRef = await _dbContext.Collection(Constants.Collections.User)
                 .Document(userId)
                 .GetSnapshotAsync(cancellationToken);
 
-            var userIdentity = docRef.ConvertTo<UserIdentity>();
+            var userIdentity = docRef.ConvertTo<UserEntity>();
             return userIdentity;
         }
 
-        public async Task<UserIdentity> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        public async Task<UserEntity> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var querySnapshot = await _dbContext.Collection(Constants.Collections.UserIdentity)
+            var querySnapshot = await _dbContext.Collection(Constants.Collections.User)
                 .WhereEqualTo("NormalizedUserName", normalizedUserName)
                 .GetSnapshotAsync(cancellationToken);
 
-            var user = querySnapshot.Documents.Select(doc => doc.ConvertTo<UserIdentity>()).FirstOrDefault();
+            var user = querySnapshot.Documents.Select(doc => doc.ConvertTo<UserEntity>()).FirstOrDefault();
             return user;
         }
 
-        public async Task<string> GetEmailAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<string> GetEmailAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var userEntity = await GetUserEntity(user.UserId, cancellationToken);
-            return userEntity.Email;
+            return Task.FromResult(user.Email);
         }
 
-        public Task<bool> GetEmailConfirmedAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<bool> GetEmailConfirmedAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(user.EmailConfirmed);
         }
 
-        public Task<string> GetNormalizedEmailAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<string> GetNormalizedEmailAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(user.NormalizedEmail);
         }
 
-        public Task<string> GetNormalizedUserNameAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<string> GetNormalizedUserNameAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult($"{user.NormalizedFirstName} {user.NormalizedLastName}");
         }
 
-        public async Task<string> GetPasswordHashAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<string> GetPasswordHashAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var userEnitity = await GetUserEntity(user.UserId, cancellationToken);
-            return userEnitity.PasswordHash;
+            return Task.FromResult(user.PasswordHash);
         }
 
-        public async Task<string> GetPhoneNumberAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<string> GetPhoneNumberAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var userEnitity = await GetUserEntity(user.UserId, cancellationToken);
-            return userEnitity.PhoneNumber;
+            return Task.FromResult(user.PhoneNumber);
         }
 
-        public Task<bool> GetPhoneNumberConfirmedAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<bool> GetPhoneNumberConfirmedAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(user.PhoneNumberConfirmed);
         }
 
-        public async Task<IList<string>> GetRolesAsync(UserIdentity user, CancellationToken cancellationToken)
+        public async Task<IList<string>> GetRolesAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return user.Roles;
         }
 
-        public Task<bool> GetTwoFactorEnabledAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<bool> GetTwoFactorEnabledAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(user.TwoFactorEnabled);
         }
 
-        public Task<string> GetUserIdAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<string> GetUserIdAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult(user.UserId);
+            return Task.FromResult(user.Id);
         }
 
-        public Task<string> GetUserNameAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<string> GetUserNameAsync(UserEntity user, CancellationToken cancellationToken)
         {
             return Task.FromResult($"{user.FirstName} {user.LastName}");
         }
 
-        public async Task<IList<UserIdentity>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+        public async Task<IList<UserEntity>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var docSnapshots = await _dbContext.Collection(Constants.Collections.UserIdentity)
+            var docSnapshots = await _dbContext.Collection(Constants.Collections.User)
                 .WhereArrayContains("Roles", roleName)
                 .GetSnapshotAsync(cancellationToken: cancellationToken);
 
-            var users = docSnapshots.Documents.Select(doc => doc.ConvertTo<UserIdentity>()).ToList();
+            var users = docSnapshots.Documents.Select(doc => doc.ConvertTo<UserEntity>()).ToList();
             return users;
         }
 
-        public async Task<bool> HasPasswordAsync(UserIdentity user, CancellationToken cancellationToken)
+        public Task<bool> HasPasswordAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var userEnitity = await GetUserEntity(user.UserId, cancellationToken);
-
-            bool hasPassword = !string.IsNullOrEmpty(userEnitity.PasswordHash);
-            return hasPassword;
+            bool hasPassword = !string.IsNullOrEmpty(user.PasswordHash);
+            return Task.FromResult(hasPassword);
         }
 
-        public Task<bool> IsInRoleAsync(UserIdentity user, string roleName, CancellationToken cancellationToken)
+        public Task<bool> IsInRoleAsync(UserEntity user, string roleName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(user.Roles.Contains(roleName));
         }
 
-        public async Task RemoveFromRoleAsync(UserIdentity user, string roleName, CancellationToken cancellationToken)
+        public Task RemoveFromRoleAsync(UserEntity user, string roleName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.Roles.Remove(roleName);
-            await _dbContext.Collection(Constants.Collections.UserIdentity).Document(user.UserId).SetAsync(user, cancellationToken: cancellationToken);
+            return Task.CompletedTask;
         }
 
-        public async Task SetEmailAsync(UserIdentity user, string email, CancellationToken cancellationToken)
+        public Task SetEmailAsync(UserEntity user, string email, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var userEntity = await GetUserEntity(user.UserId, cancellationToken);
-
-            userEntity.Email = email;
-            await SaveUserEntity(userEntity, cancellationToken);
+            user.Email = email;
+            return Task.CompletedTask;
         }
 
-        public Task SetEmailConfirmedAsync(UserIdentity user, bool confirmed, CancellationToken cancellationToken)
+        public Task SetEmailConfirmedAsync(UserEntity user, bool confirmed, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.EmailConfirmed = confirmed;
             return Task.CompletedTask;
         }
 
-        public Task SetNormalizedEmailAsync(UserIdentity user, string normalizedEmail, CancellationToken cancellationToken)
+        public Task SetNormalizedEmailAsync(UserEntity user, string normalizedEmail, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.NormalizedEmail = normalizedEmail;
             return Task.CompletedTask;
         }
 
-        public Task SetNormalizedUserNameAsync(UserIdentity user, string normalizedName, CancellationToken cancellationToken)
+        public Task SetNormalizedUserNameAsync(UserEntity user, string normalizedName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var splistString = normalizedName.Split(' ');
@@ -238,37 +219,35 @@ namespace iRental.Firestore.Identity.Stores
             return Task.CompletedTask;
         }
 
-        public async Task SetPasswordHashAsync(UserIdentity user, string passwordHash, CancellationToken cancellationToken)
+        public Task SetPasswordHashAsync(UserEntity user, string passwordHash, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var userEntity = await GetUserEntity(user.UserId, cancellationToken);
-            userEntity.PasswordHash = passwordHash;
-            await SaveUserEntity(userEntity, cancellationToken);
+            user.PasswordHash = passwordHash;
+            return Task.CompletedTask;
         }
 
-        public async Task SetPhoneNumberAsync(UserIdentity user, string phoneNumber, CancellationToken cancellationToken)
+        public Task SetPhoneNumberAsync(UserEntity user, string phoneNumber, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var userEntity = await GetUserEntity(user.UserId, cancellationToken);
-            userEntity.PhoneNumber = phoneNumber;
-            await SaveUserEntity(userEntity, cancellationToken);
+            user.PhoneNumber = phoneNumber;
+            return Task.CompletedTask;
         }
 
-        public Task SetPhoneNumberConfirmedAsync(UserIdentity user, bool confirmed, CancellationToken cancellationToken)
+        public Task SetPhoneNumberConfirmedAsync(UserEntity user, bool confirmed, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.PhoneNumberConfirmed = confirmed;
             return Task.CompletedTask;
         }
 
-        public Task SetTwoFactorEnabledAsync(UserIdentity user, bool enabled, CancellationToken cancellationToken)
+        public Task SetTwoFactorEnabledAsync(UserEntity user, bool enabled, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.TwoFactorEnabled = enabled;
             return Task.CompletedTask;
         }
 
-        public Task SetUserNameAsync(UserIdentity user, string userName, CancellationToken cancellationToken)
+        public Task SetUserNameAsync(UserEntity user, string userName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -278,33 +257,13 @@ namespace iRental.Firestore.Identity.Stores
             return Task.CompletedTask;
         }
 
-        public async Task<IdentityResult> UpdateAsync(UserIdentity user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _dbContext.Collection(Constants.Collections.UserIdentity).Document(user.UserId).SetAsync(user, cancellationToken: cancellationToken);
+            await _dbContext.Collection(Constants.Collections.User).Document(user.Id).SetAsync(user, cancellationToken: cancellationToken);
 
             return IdentityResult.Success;
         }
-
-        #region helpers
-
-        private async Task<UserEntity> GetUserEntity(string userId, CancellationToken cancellationToken)
-        {
-            var docRef = await _dbContext.Collection(Constants.Collections.User)
-                .Document(userId)
-                .GetSnapshotAsync(cancellationToken);
-            var userEnitity = docRef.ConvertTo<UserEntity>();
-            return userEnitity;
-        }
-
-        private async Task SaveUserEntity(UserEntity userEntity, CancellationToken cancellationToken)
-        {
-            await _dbContext.Collection(Constants.Collections.User)
-                .Document(userEntity.Id)
-                .SetAsync(userEntity, cancellationToken: cancellationToken);
-        }
-
-        #endregion
     }
 }

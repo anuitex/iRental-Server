@@ -1,12 +1,12 @@
 ﻿using Google.Cloud.Firestore;
 using iRental.BusinessLogicLayer.Interfaces.Repositories;
-using iRental.Domain.Entities;
+using iRental.Domain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace iRental.Repository.Firestore.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
+    public class BaseRepository<T> : IBaseRepository<T> where T : IEntity
     {
         protected readonly FirestoreDb _dbContext;
         protected readonly string _collectionName;

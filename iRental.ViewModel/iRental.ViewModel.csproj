@@ -5,11 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="RequestModels\" />
-    <Folder Include="ResponseModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
   </ItemGroup>
 

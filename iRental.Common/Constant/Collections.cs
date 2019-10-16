@@ -5,7 +5,6 @@
         public static class Collections
         {
             public const string RoleIdentity = "role-identity";
-            public const string UserIdentity = "user-identity";
             public const string Advert = "adverts";
             public const string Photo = "photos";
             public const string User = "users";

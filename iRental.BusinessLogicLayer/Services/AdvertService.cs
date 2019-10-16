@@ -1,7 +1,7 @@
-﻿using iRental.BusinessLogicLayer.Interfaces;
+﻿using iRental.BusinessLogicLayer.Identity;
+using iRental.BusinessLogicLayer.Interfaces.Repositories;
 using iRental.BusinessLogicLayer.Mappers;
 using iRental.ViewModel.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,12 +10,14 @@ namespace iRental.BusinessLogicLayer.Services
 {
     public class AdvertService
     {
-        private readonly IUnitOfWork _dbContext;
+        private readonly IAdvertRepository _advertRepository;
+        private readonly ApplicationUserManager _userManager;
 
 
-        public AdvertService(IUnitOfWork dbContext)
+        public AdvertService(IAdvertRepository advertRepository, ApplicationUserManager userManager)
         {
-            _dbContext = dbContext;
+            _advertRepository = advertRepository;
+            _userManager = userManager;
         }
 
 
@@ -24,22 +26,22 @@ namespace iRental.BusinessLogicLayer.Services
             var newAdvert = AdvertMapper.Map(request);
             newAdvert.UserId = userId;
 
-            await _dbContext.Adverts.CreateAsync(newAdvert);
+            await _advertRepository.CreateAsync(newAdvert);
         }
 
         public async Task<IEnumerable<AdvertListResponse>> GetAllForUserAsync(string userId)
         {
-            var adverts = await _dbContext.Adverts.GetAllAsync();
+            var adverts = await _advertRepository.GetAllAsync();
             var advertsViewModels = adverts.Select(advart => AdvertListMapper.Map(advart));
             return advertsViewModels;
         }
 
         public async Task<AdvertsDetailsResponse> GetMoreByIdAsync(string advertId, string userId)
         {
-            var advert = await _dbContext.Adverts.FindByIdAsync(advertId);
+            var advert = await _advertRepository.FindByIdAsync(advertId);
             var advertViewModel = AdvertDetailsMapper.Map(advert);
 
-            var owner = await _dbContext.Users.FindByIdAsync(userId);
+            var owner = await _userManager.FindByIdAsync(userId);
 
             advertViewModel.Owner = new AdvertOwner
             {

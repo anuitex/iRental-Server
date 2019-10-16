@@ -1,10 +1,6 @@
-﻿using iRental.Domain.Entities;
-using iRental.Domain.Entities.User;
+﻿using iRental.BusinessLogicLayer.Interfaces.Repositories;
 using iRental.Repository.Firestore.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace iRental.Repository.Firestore.DependencyInjection
 {
@@ -12,9 +8,8 @@ namespace iRental.Repository.Firestore.DependencyInjection
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddTransient<BaseRepository<AdvertEntity>>();
-            services.AddTransient<BaseRepository<PhotoEntity>>();
-            services.AddTransient<BaseRepository<UserEntity>>();
+            services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<IAdvertRepository, AdvertRepository>();
         }
     }
 }

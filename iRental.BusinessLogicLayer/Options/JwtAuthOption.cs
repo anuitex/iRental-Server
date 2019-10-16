@@ -8,8 +8,8 @@ namespace iRental.BusinessLogicLayer.Options
     {
         public string Issuer { get; set; }
         public string Audience { get; set; }
-        public TimeSpan AccessTokenExpiration { get; set; } = TimeSpan.FromSeconds(10);
-        public TimeSpan RefreshTokenExpiration { get; set; } = TimeSpan.FromDays(60);
+        public TimeSpan AccessTokenExpiration { get; set; } = TimeSpan.FromMinutes(1);
+        public TimeSpan RefreshTokenExpiration { get; set; } = TimeSpan.FromMinutes(2);
         public string Key { get; set; }
 
         public TokenValidationParameters GetTokenValidationParameters()

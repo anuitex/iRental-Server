@@ -10,11 +10,13 @@ namespace iRental.Domain.Entities.User
     public class UserEntity : UserIdentity
     {
         [FirestoreProperty]
+        public string FirstName { get; set; }
+        [FirestoreProperty]
+        public string LastName { get; set; }
+        [FirestoreProperty]
         public DateTime Birthday { get; set; }
         [FirestoreProperty]
         public string PhoneNumber { get; set; }
-        [FirestoreProperty]
-        public string Email { get; set; }
         [FirestoreProperty]
         public string PasswordHash { get; set; }
         [FirestoreProperty]

@@ -10,13 +10,11 @@ namespace iRental.Domain.Identity
         [FirestoreDocumentId]
         public string Id { get; set; }
         [FirestoreProperty]
-        public string FirstName { get; set; }
+        public string Login { get; set; }
         [FirestoreProperty]
-        public string LastName { get; set; }
+        public string NormalizedLogin { get; set; }
         [FirestoreProperty]
-        public string NormalizedFirstName { get; set; }
-        [FirestoreProperty]
-        public string NormalizedLastName { get; set; }
+        public string Email { get; set; }
         [FirestoreProperty]
         public string NormalizedEmail { get; set; }
         [FirestoreProperty]

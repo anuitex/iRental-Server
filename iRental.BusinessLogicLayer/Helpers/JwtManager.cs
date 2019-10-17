@@ -40,7 +40,7 @@ namespace iRental.BusinessLogicLayer.Helpers
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, $"{user.NormalizedFirstName} ${user.NormalizedLastName}")
+                new Claim(ClaimTypes.Name, user.Login)
             };
 
             foreach (var userRole in userRoles)

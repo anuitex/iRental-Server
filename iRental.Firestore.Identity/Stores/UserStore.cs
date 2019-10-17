@@ -85,7 +85,7 @@ namespace iRental.Firestore.Identity.Stores
             cancellationToken.ThrowIfCancellationRequested();
 
             var querySnapshot = await _dbContext.Collection(Constants.Collections.User)
-                .WhereEqualTo("NormalizedUserName", normalizedUserName)
+                .WhereEqualTo("NormalizedLogin", normalizedUserName)
                 .GetSnapshotAsync(cancellationToken);
 
             var user = querySnapshot.Documents.Select(doc => doc.ConvertTo<UserEntity>()).FirstOrDefault();
@@ -113,7 +113,7 @@ namespace iRental.Firestore.Identity.Stores
         public Task<string> GetNormalizedUserNameAsync(UserEntity user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Task.FromResult($"{user.NormalizedFirstName} {user.NormalizedLastName}");
+            return Task.FromResult(user.NormalizedLogin);
         }
 
         public Task<string> GetPasswordHashAsync(UserEntity user, CancellationToken cancellationToken)
@@ -154,7 +154,7 @@ namespace iRental.Firestore.Identity.Stores
 
         public Task<string> GetUserNameAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task.FromResult($"{user.FirstName} {user.LastName}");
+            return Task.FromResult(user.Login);
         }
 
         public async Task<IList<UserEntity>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
@@ -213,9 +213,7 @@ namespace iRental.Firestore.Identity.Stores
         public Task SetNormalizedUserNameAsync(UserEntity user, string normalizedName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var splistString = normalizedName.Split(' ');
-            user.NormalizedFirstName = splistString[0];
-            user.NormalizedLastName = splistString[1];
+            user.NormalizedLogin = normalizedName;
             return Task.CompletedTask;
         }
 
@@ -250,10 +248,7 @@ namespace iRental.Firestore.Identity.Stores
         public Task SetUserNameAsync(UserEntity user, string userName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var splistString = userName.Split(' ');
-            user.FirstName = splistString[0];
-            user.LastName = splistString[1];
+            user.Login = userName;
             return Task.CompletedTask;
         }
 

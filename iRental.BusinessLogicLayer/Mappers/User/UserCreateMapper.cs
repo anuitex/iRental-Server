@@ -1,8 +1,5 @@
 ﻿using iRental.Domain.Entities.User;
 using iRental.ViewModel.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace iRental.BusinessLogicLayer.Mappers.User
 {
@@ -12,6 +9,7 @@ namespace iRental.BusinessLogicLayer.Mappers.User
         {
             var userEntity = new UserEntity()
             {
+                Login = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Birthday = request.Birthday.ToUniversalTime(),

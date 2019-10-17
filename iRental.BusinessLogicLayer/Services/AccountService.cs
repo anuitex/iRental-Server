@@ -1,10 +1,8 @@
 ﻿using iRental.BusinessLogicLayer.Exceptions;
 using iRental.BusinessLogicLayer.Helpers;
 using iRental.BusinessLogicLayer.Identity;
-using iRental.BusinessLogicLayer.Interfaces;
 using iRental.BusinessLogicLayer.Mappers.User;
 using iRental.Domain.Entities.User;
-using iRental.Domain.Identity;
 using iRental.ViewModel.RequestModels;
 using iRental.ViewModel.ResponseModels;
 using iRental.ViewModel.ViewModels;

@@ -7,6 +7,7 @@ using iRental.Common.Options;
 using iRental.Domain.Entities.User;
 using iRental.Domain.Identity;
 using iRental.Firestore.Identity.DependencyInjection;
+using iRental.Presentation.Extensions;
 using iRental.Repository.Firestore.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -33,20 +34,13 @@ namespace iRental.Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<JwtAuthOption>(Configuration.GetSection("JwtAuthOptions"));
-            services.Configure<FirestoreOptions>(Configuration.GetSection("FirestoreOptions"));
+            services.SetOptions(Configuration);
             var serviceProvider = services.BuildServiceProvider();
 
-            var jwtAuthOptions = serviceProvider.GetRequiredService<IOptions<JwtAuthOption>>().Value;
-            var firestoreOptions = serviceProvider.GetRequiredService<IOptions<FirestoreOptions>>().Value;
+            var firestoreOptions = serviceProvider.GetRequiredService<IOptions<FirestoreOptions>>();
 
-            services.AddTransient<FirestoreDb>(_ => {
-                var clientBuilder = new FirestoreClientBuilder() { CredentialsPath = "./iRentalServiceAccount.json" };
-
-                var client = clientBuilder.Build();
-                var dbContext = FirestoreDb.Create(firestoreOptions.ProjectId, client);
-                return dbContext;
-            });
+            services.AddFirestore(firestoreOptions);
+            services.AddFileStore();
 
             services.AddRepositories();
             services.AddManagers();
@@ -64,6 +58,7 @@ namespace iRental.Presentation
                 .AddDefaultTokenProviders();
 
 
+            var jwtAuthOptions = serviceProvider.GetRequiredService<IOptions<JwtAuthOption>>().Value;
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

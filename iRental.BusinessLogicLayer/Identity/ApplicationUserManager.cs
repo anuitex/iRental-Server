@@ -21,7 +21,6 @@ namespace iRental.BusinessLogicLayer.Identity
             IServiceProvider services,
             ILogger<UserManager<UserEntity>> logger
             ) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
-        {
-        }
+        { }
     }
 }

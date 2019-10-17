@@ -15,10 +15,6 @@ namespace iRental.BusinessLogicLayer.Mappers
             mappedModel.CountBeds = entity.CountBeds;
             mappedModel.CountRooms = entity.CountRooms;
             mappedModel.CountBathrooms = entity.CountBathrooms;
-
-            //todo: add photo url
-            //mappedModel.MainPhotoUrl = entity;
-
             return mappedModel;
         }
     }

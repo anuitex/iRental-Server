@@ -9,8 +9,13 @@ using System.Threading.Tasks;
 
 namespace iRental.Firestore.Identity.Stores
 {
-    public class UserStore : IUserStore<UserEntity>, IUserEmailStore<UserEntity>, IUserPhoneNumberStore<UserEntity>,
-        IUserTwoFactorStore<UserEntity>, IUserPasswordStore<UserEntity>, IUserRoleStore<UserEntity>
+    public class UserStore :
+        IUserStore<UserEntity>,
+        IUserEmailStore<UserEntity>,
+        IUserPhoneNumberStore<UserEntity>,
+        IUserTwoFactorStore<UserEntity>,
+        IUserPasswordStore<UserEntity>,
+        IUserRoleStore<UserEntity>
     {
         public readonly FirestoreDb _dbContext;
 

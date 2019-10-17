@@ -29,9 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iRental.Common", "iRental.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iRental.Repository.Firestore.Test", "iRental.Repository.Firestore.Test\iRental.Repository.Firestore.Test.csproj", "{DE07DDD6-6429-43B8-B75C-6BB64CC7AF5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRental.Firestore.Identity", "iRental.Firestore.Identity\iRental.Firestore.Identity.csproj", "{E628B962-3C06-4F2C-9A3E-369CB436A1AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iRental.Firestore.Identity", "iRental.Firestore.Identity\iRental.Firestore.Identity.csproj", "{E628B962-3C06-4F2C-9A3E-369CB436A1AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRental.Validator", "iRental.Validator\iRental.Validator.csproj", "{7C754267-9E14-47AA-BAA3-64ADC8AB1F8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iRental.Validator", "iRental.Validator\iRental.Validator.csproj", "{7C754267-9E14-47AA-BAA3-64ADC8AB1F8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -25,6 +25,7 @@ namespace iRental.ViewModel.ViewModels
 
     public class AdvertOwner
     {
+        public string UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string AvatarUrl { get; set; }

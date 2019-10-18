@@ -1,7 +1,9 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using iRental.BusinessLogicLayer.Interfaces.Clients;
+using iRental.Common.Options;
 using iRental.Domain.Entities;
+using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -11,20 +13,20 @@ namespace iRental.Client
     public class FileUploader : IFileUploader
     {
         private readonly StorageClient _storageClient;
+        private readonly string _projectId;
 
-        public FileUploader(GoogleCredential googleCredential)
+        public FileUploader(GoogleCredential googleCredential, IOptions<FirestoreOptions> options)
         {
             _storageClient = StorageClient.Create(googleCredential);
+            _projectId = options.Value.ProjectId;
         }
 
-        private async Task<PhotoEntity> UploadAsync(string bucket, MemoryStream fileStream, string contentType)
+        private async Task<PhotoEntity> UploadAsync(string folder, MemoryStream fileStream, string contentType)
         {
-            var photoEntity = new PhotoEntity
-            {
-                BucketName = Constants.FilestoreBucket.Avatar
-            };
+            var photoEntity = new PhotoEntity();
+            photoEntity.BucketPath = $"{folder}/{photoEntity.Id}";
 
-            await _storageClient.UploadObjectAsync(bucket, objectName: photoEntity.Id, contentType, fileStream);
+            await _storageClient.UploadObjectAsync(_projectId, objectName: photoEntity.BucketPath, contentType, fileStream);
 
             return photoEntity;
         }
@@ -61,7 +63,7 @@ namespace iRental.Client
 
         public async Task DeletePhotoAsync(PhotoEntity photoEntity)
         {
-            await _storageClient.DeleteObjectAsync(photoEntity.BucketName, objectName: photoEntity.Id);
+            await _storageClient.DeleteObjectAsync(_projectId, objectName: photoEntity.BucketPath);
         }
     }
 }

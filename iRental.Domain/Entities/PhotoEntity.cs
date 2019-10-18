@@ -8,6 +8,6 @@ namespace iRental.Domain.Entities
         [FirestoreProperty]
         public string Url { get; set; }
         [FirestoreProperty]
-        public string BucketName { get; set; }
+        public string BucketPath { get; set; }
     }
 }

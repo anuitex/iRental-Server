@@ -4,10 +4,6 @@ using Google.Cloud.Firestore.V1;
 using iRental.Common.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace iRental.Presentation.Extensions
 {
@@ -24,7 +20,7 @@ namespace iRental.Presentation.Extensions
             });
         }
 
-        public static void AddFileStore(this IServiceCollection services)
+        public static void AddCredentialsFileStore(this IServiceCollection services)
         {
             services.AddSingleton<GoogleCredential>(_ => GoogleCredential.FromFile($"./iRentalServiceAccount.json"));
         }

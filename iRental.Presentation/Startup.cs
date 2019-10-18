@@ -3,6 +3,7 @@ using Google.Cloud.Firestore.V1;
 using iRental.BusinessLogicLayer.DependencyInjection;
 using iRental.BusinessLogicLayer.Identity;
 using iRental.BusinessLogicLayer.Options;
+using iRental.Client.DependencyInjection;
 using iRental.Common.Options;
 using iRental.Domain.Entities.User;
 using iRental.Domain.Identity;
@@ -40,7 +41,8 @@ namespace iRental.Presentation
             var firestoreOptions = serviceProvider.GetRequiredService<IOptions<FirestoreOptions>>();
 
             services.AddFirestore(firestoreOptions);
-            services.AddFileStore();
+            services.AddCredentialsFileStore();
+            services.AddClients();
 
             services.AddRepositories();
             services.AddManagers();

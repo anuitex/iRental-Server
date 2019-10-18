@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\iRental.BusinessLogicLayer\iRental.BusinessLogicLayer.csproj" />
+    <ProjectReference Include="..\iRental.Client\iRental.Client.csproj" />
     <ProjectReference Include="..\iRental.Firestore.Identity\iRental.Firestore.Identity.csproj" />
     <ProjectReference Include="..\iRental.Repository.Firestore\iRental.Repository.Firestore.csproj" />
     <ProjectReference Include="..\iRental.Validator\iRental.Validator.csproj" />

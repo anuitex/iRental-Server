@@ -19,7 +19,7 @@ namespace iRental.BusinessLogicLayer.Mappers
             viewModel.CountBathrooms = entity.CountBathrooms;
             viewModel.Area = entity.Area;
 
-            advertViewModel.Owner = new AdvertOwner
+            viewModel.Owner = new AdvertOwner
             {
                 UserId = owner.Id,
                 FirstName = owner.FirstName,

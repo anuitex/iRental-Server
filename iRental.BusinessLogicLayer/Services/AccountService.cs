@@ -1,6 +1,7 @@
 ﻿using iRental.BusinessLogicLayer.Exceptions;
 using iRental.BusinessLogicLayer.Helpers;
 using iRental.BusinessLogicLayer.Identity;
+using iRental.BusinessLogicLayer.Interfaces.Clients;
 using iRental.BusinessLogicLayer.Mappers.User;
 using iRental.Domain.Entities.User;
 using iRental.ViewModel.RequestModels;
@@ -8,6 +9,7 @@ using iRental.ViewModel.ResponseModels;
 using iRental.ViewModel.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -19,15 +21,19 @@ namespace iRental.BusinessLogicLayer.Services
         private readonly ApplicationUserManager _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly JwtManager _jwtManager;
+        private readonly IFileUploader _fileUploader;
 
         public AccountService(
             ApplicationUserManager userManager,
             SignInManager<UserEntity> signInManager,
-            JwtManager jwtManager)
+            JwtManager jwtManager,
+            IFileUploader fileUploader
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtManager = jwtManager;
+            _fileUploader = fileUploader;
         }
 
         public async Task<UserEntity> SignUpAsync(UserCreateRequest request)
@@ -38,6 +44,19 @@ namespace iRental.BusinessLogicLayer.Services
             if (!identityResult.Succeeded)
             {
                 throw new IdentityException { Errors = identityResult.Errors };
+            }
+
+
+            if (request.Avatar != null)
+            {
+                using (MemoryStream avatarStream = new MemoryStream())
+                {
+                    request.Avatar.CopyTo(avatarStream);
+
+                    var avatarPhotoEntity = await _fileUploader.UploadAvatarPhotoAsync(avatarStream, contentType: request.Avatar.ContentType);
+                    user.Avatar = avatarPhotoEntity;
+                    await _userManager.UpdateAsync(user);
+                }
             }
 
             return user;

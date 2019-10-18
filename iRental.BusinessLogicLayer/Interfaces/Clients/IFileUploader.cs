@@ -6,8 +6,8 @@ namespace iRental.BusinessLogicLayer.Interfaces.Clients
 {
     public interface IFileUploader
     {
-        Task<PhotoEntity> UploadAvatarPhotoAsync(MemoryStream fileStream, string fileName, string contentType);
-        Task<PhotoEntity> UploadAdvertPhotoAsync(MemoryStream fileStream, string fileName, string contentType);
+        Task<PhotoEntity> UploadAvatarPhotoAsync(MemoryStream fileStream, string contentType);
+        Task<PhotoEntity> UploadAdvertPhotoAsync(MemoryStream fileStream, string contentType);
         Task DeletePhotoAsync(PhotoEntity photoEntity);
     }
 }

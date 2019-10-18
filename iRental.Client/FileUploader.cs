@@ -1,9 +1,8 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using iRental.BusinessLogicLayer.Interfaces.Clients;
-using iRental.Common.Options;
 using iRental.Domain.Entities;
-using Microsoft.Extensions.Options;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -18,32 +17,51 @@ namespace iRental.Client
             _storageClient = StorageClient.Create(googleCredential);
         }
 
-        private async Task<PhotoEntity> UploadAsync(string bucket, MemoryStream fileStream, string fileName, string contentType)
+        private async Task<PhotoEntity> UploadAsync(string bucket, MemoryStream fileStream, string contentType)
         {
-            await _storageClient.UploadObjectAsync(bucket, fileName, contentType, fileStream);
-
             var photoEntity = new PhotoEntity
             {
-                Name = fileName,
                 BucketName = Constants.FilestoreBucket.Avatar
             };
+
+            await _storageClient.UploadObjectAsync(bucket, objectName: photoEntity.Id, contentType, fileStream);
 
             return photoEntity;
         }
 
-        public async Task<PhotoEntity> UploadAdvertPhotoAsync(MemoryStream fileStream, string fileName, string contentType)
+        public async Task<PhotoEntity> UploadAdvertPhotoAsync(MemoryStream fileStream, string contentType)
         {
-            return await UploadAsync(Constants.FilestoreBucket.AdvertPhoto, fileStream, fileName, contentType);
+            if (fileStream == null)
+            {
+                throw new ArgumentNullException("fileStream");
+            }
+
+            if (string.IsNullOrWhiteSpace(contentType))
+            {
+                throw new ArgumentNullException("contentType");
+            }
+
+            return await UploadAsync(Constants.FilestoreBucket.AdvertPhoto, fileStream, contentType);
         }
 
-        public async Task<PhotoEntity> UploadAvatarPhotoAsync(MemoryStream fileStream, string fileName, string contentType)
+        public async Task<PhotoEntity> UploadAvatarPhotoAsync(MemoryStream fileStream, string contentType)
         {
-            return await UploadAsync(Constants.FilestoreBucket.Avatar, fileStream, fileName, contentType);
+            if (fileStream == null)
+            {
+                throw new ArgumentNullException("fileStream");
+            }
+
+            if (string.IsNullOrWhiteSpace(contentType))
+            {
+                throw new ArgumentNullException("contentType");
+            }
+
+            return await UploadAsync(Constants.FilestoreBucket.Avatar, fileStream, contentType);
         }
 
         public async Task DeletePhotoAsync(PhotoEntity photoEntity)
         {
-            await _storageClient.DeleteObjectAsync(photoEntity.BucketName, photoEntity.Name);
+            await _storageClient.DeleteObjectAsync(photoEntity.BucketName, objectName: photoEntity.Id);
         }
     }
 }

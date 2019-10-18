@@ -62,26 +62,18 @@ namespace iRental.BusinessLogicLayer.Services
             }
 
             var advert = await _advertRepository.FindByIdAsync(advertId);
-            var advertViewModel = AdvertDetailsMapper.Map(advert);
-
-            advertViewModel.Owner = new AdvertOwner
-            {
-                UserId = owner.Id,
-                FirstName = owner.FirstName,
-                LastName = owner.LastName,
-                Rating = owner.Rating,
-                CountRated = owner.CountRated,
-                AvatarUrl = owner.Avatar?.Url
-            };
+            var advertViewModel = AdvertDetailsMapper.Map(advert, owner);
 
             advertViewModel.IsFavorite = await _favoritesRepository.IsAdvertInFavorites(owner.Id, advertId);
             advertViewModel.IsInSaveList = await _userSaveListRepository.ContainsAdvert(owner.Id, advertId);
 
             //get and set photosUrl
-            var photoEntity = await _photoRepository.FindByIdAsync(advert.MainPhotoId);
-            advertViewModel.PhotosUrl.ToList().Add(photoEntity.Url);
+            var mainPhotoEntity = await _photoRepository.FindByIdAsync(advert.MainPhotoId);
             var photoUrls = await _photoRepository.GetUrlsByIds(advert.PhotoIds);
-            advertViewModel.PhotosUrl.ToList().AddRange(photoUrls);
+
+            var photos = advertViewModel.PhotosUrl.ToList();
+            photos.Add(mainPhotoEntity.Url);
+            photos.AddRange(photoUrls);
 
             return advertViewModel;
         }

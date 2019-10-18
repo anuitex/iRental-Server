@@ -1,11 +1,12 @@
 ﻿using iRental.Domain.Entities;
+using iRental.Domain.Entities.User;
 using iRental.ViewModel.ViewModels;
 
 namespace iRental.BusinessLogicLayer.Mappers
 {
     public static class AdvertDetailsMapper
     {
-        public static AdvertsDetailsResponse Map(AdvertEntity entity)
+        public static AdvertsDetailsResponse Map(AdvertEntity entity, UserEntity owner)
         {
             var viewModel = new AdvertsDetailsResponse();
 
@@ -17,6 +18,16 @@ namespace iRental.BusinessLogicLayer.Mappers
             viewModel.CountRooms = entity.CountRooms;
             viewModel.CountBathrooms = entity.CountBathrooms;
             viewModel.Area = entity.Area;
+
+            advertViewModel.Owner = new AdvertOwner
+            {
+                UserId = owner.Id,
+                FirstName = owner.FirstName,
+                LastName = owner.LastName,
+                Rating = owner.Rating,
+                CountRated = owner.CountRated,
+                AvatarUrl = owner.Avatar?.Url
+            };
 
             return viewModel;
         }

@@ -7,6 +7,7 @@ namespace iRental.ViewModel.ViewModels
         public string Id { get; set; }
         public IEnumerable<string> PhotosUrl { get; set; }
         public bool IsFavorite { get; set; }
+        public bool IsInSaveList { get; set; }
         public string Title { get; set; }
         public string Address { get; set; }
         public string Price { get; set; }

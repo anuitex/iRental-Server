@@ -11,6 +11,8 @@ namespace iRental.Repository.Firestore.DependencyInjection
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IAdvertRepository, AdvertRepository>();
             services.AddTransient<IPhotoRepository, PhotoRepository>();
+            services.AddTransient<IUserFavoriteRepository, UserFavoriteRepository>();
+            services.AddTransient<IUserSaveListRepository, UserSaveListRepository>();
         }
     }
 }

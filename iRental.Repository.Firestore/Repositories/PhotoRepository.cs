@@ -2,9 +2,8 @@
 using iRental.BusinessLogicLayer.Interfaces.Repositories;
 using iRental.Common.Constant;
 using iRental.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace iRental.Repository.Firestore.Repositories
 {
@@ -12,6 +11,17 @@ namespace iRental.Repository.Firestore.Repositories
     {
         public PhotoRepository(FirestoreDb dbContext) : base(dbContext, Constants.Collections.Photo)
         {
+        }
+
+        public async Task<IEnumerable<string>> GetUrlsByIds(IEnumerable<string> ids)
+        {
+            var urls = new List<string>();
+            foreach (var id in ids)
+            {
+                var photoEntity = await FindByIdAsync(id);
+                urls.Add(photoEntity.Url);
+            }
+            return urls;
         }
     }
 }

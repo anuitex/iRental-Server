@@ -2,6 +2,7 @@
 using iRental.Common.Constant;
 using iRental.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,7 +52,13 @@ namespace iRental.Firestore.Identity.Stores
             var selectQuery = colRef.Query.WhereEqualTo("NormalizedName", normalizedRoleName);
             var querySnapshot = await selectQuery.GetSnapshotAsync(cancellationToken);
 
-            var role = querySnapshot.Documents[0].ConvertTo<RoleIdentity>();
+            var snapshot = querySnapshot.Documents.FirstOrDefault();
+            if (snapshot == null)
+            {
+                return null;
+            }
+
+            var role = snapshot.ConvertTo<RoleIdentity>();
             return role;
         }
 

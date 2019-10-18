@@ -9,6 +9,7 @@
             public const string Photo = "photos";
             public const string User = "users";
             public const string UserFavorite = "user-favorite";
+            public const string UserSaveList = "user-savelist";
         }
     }
 }

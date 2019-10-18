@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using iRental.BusinessLogicLayer.Interfaces.Repositories;
+﻿using iRental.BusinessLogicLayer.Interfaces.Repositories;
 using iRental.BusinessLogicLayer.Mappers;
 using iRental.Domain.Entities.User;
 using iRental.ViewModel.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace iRental.BusinessLogicLayer.Services
 {
-    public class AdvertsMyService
+    public class AdvertHomeService
     {
         private readonly IAdvertRepository _advertRepository;
         private readonly IPhotoRepository _photoRepository;
         private readonly IUserFavoriteRepository _favoritesRepository;
         private readonly IUserSaveListRepository _userSaveListRepository;
 
-        public AdvertsMyService(
-            IAdvertRepository advertRepository,
-            IPhotoRepository photoRepository,
+        public AdvertHomeService(
+            IAdvertRepository advertRepository, 
+            IPhotoRepository photoRepository, 
             IUserFavoriteRepository favoritesRepository,
             IUserSaveListRepository userSaveListRepository
             )
@@ -37,7 +36,7 @@ namespace iRental.BusinessLogicLayer.Services
                 throw new ArgumentNullException("userId");
             }
 
-            var adverts = await _advertRepository.GetAllWithUserAsync(userId);
+            var adverts = await _advertRepository.GetAllWithoutUserAsync(userId);
 
             var advertsViewModels = new List<AdvertListResponse>();
             foreach (var advert in adverts)

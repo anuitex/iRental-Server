@@ -15,9 +15,9 @@ namespace iRental.Presentation.Controllers
     public class AdvertsMyController : ControllerBase
     {
         private readonly ApplicationUserManager _applicationUserManager;
-        private readonly AdvertsMyService _advertMyService;
+        private readonly AdvertMyService _advertMyService;
 
-        public AdvertsMyController(ApplicationUserManager applicationUserManager, AdvertsMyService advertMyService)
+        public AdvertsMyController(ApplicationUserManager applicationUserManager, AdvertMyService advertMyService)
         {
             _applicationUserManager = applicationUserManager;
             _advertMyService = advertMyService;

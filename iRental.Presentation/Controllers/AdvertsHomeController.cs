@@ -12,10 +12,10 @@ namespace iRental.Presentation.Controllers
     [ApiController]
     public class AdvertsHomeController : ControllerBase
     {
-        private readonly AdvertsHomeService _homeService;
+        private readonly AdvertHomeService _homeService;
         private readonly ApplicationUserManager _applicationUserManager;
 
-        public AdvertsHomeController(AdvertsHomeService homeService, ApplicationUserManager applicationUserManager)
+        public AdvertsHomeController(AdvertHomeService homeService, ApplicationUserManager applicationUserManager)
         {
             _homeService = homeService;
             _applicationUserManager = applicationUserManager;

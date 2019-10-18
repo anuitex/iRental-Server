@@ -4,12 +4,12 @@ using System.Collections.Generic;
 namespace iRental.Domain.Entities.User
 {
     [FirestoreData]
-    public class UserFavorites : BaseEntity
+    public class UserFavoritesEntity : BaseEntity
     {
         public string UserId { get; set; }
         public IEnumerable<string> AdvertIds { get; set; }
 
-        public UserFavorites()
+        public UserFavoritesEntity()
         {
             AdvertIds = new List<string>();
         }

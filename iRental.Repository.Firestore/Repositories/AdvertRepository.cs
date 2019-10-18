@@ -16,7 +16,7 @@ namespace iRental.Repository.Firestore.Repositories
         public async Task<IEnumerable<AdvertEntity>> GetAllForUserAsync(string userId)
         {
             QuerySnapshot allItemsQuerySnapshot = await _dbContext.Collection(_collectionName)
-                .WhereEqualTo("UserId", userId)
+                .WhereEqualTo(nameof(AdvertEntity.UserId), userId)
                 .GetSnapshotAsync();
 
             List<AdvertEntity> itemsResult = new List<AdvertEntity>();

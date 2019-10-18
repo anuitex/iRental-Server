@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace iRental.BusinessLogicLayer.Interfaces.Repositories
 {
-    public interface IUserFavoriteRepository : IBaseRepository<UserFavorites>
+    public interface IUserFavoriteRepository : IBaseRepository<UserFavoritesEntity>
     {
-        Task<UserFavorites> FindByUserIdAsync(string userId);
+        Task<UserFavoritesEntity> FindByUserIdAsync(string userId);
         Task<bool> IsAdvertInFavorites(string userId, string advertId);
     }
 }

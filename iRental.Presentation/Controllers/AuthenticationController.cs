@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace iRental.Presentation.Controllers
 {
-    [Route("api/[controller]"), AllowAnonymous]
+    [Route("api/auth"), AllowAnonymous]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly AccountService _accountService;
 
 
-        public AccountController(AccountService accountService)
+        public AuthenticationController(AccountService accountService)
         {
             _accountService = accountService;
         }

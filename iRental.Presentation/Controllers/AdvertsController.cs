@@ -3,21 +3,22 @@ using iRental.BusinessLogicLayer.Services;
 using iRental.ViewModel.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace iRental.Presentation.Controllers
 {
-    [Route("api/[controller]"), Authorize]
+    [Route("api/adverts"), Authorize]
     [ApiController]
     public class AdvertsController : ControllerBase
     {
         private readonly AdvertService _advertService;
         private readonly ApplicationUserManager _applicationUserManager;
 
-        public AdvertsController(AdvertService advertService, ApplicationUserManager applicationUserManager)
+        public AdvertsController(ApplicationUserManager applicationUserManager, AdvertService advertService)
         {
-            _advertService = advertService;
             _applicationUserManager = applicationUserManager;
+            _advertService = advertService;
         }
 
         [HttpPut]

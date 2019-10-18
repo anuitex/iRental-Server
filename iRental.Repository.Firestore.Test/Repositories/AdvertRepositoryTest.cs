@@ -46,7 +46,7 @@ namespace iRental.Repository.Firestore.Test.Repositories
         public async Task GetAllForUser()
         {
             string userId = "c98ae5bd-01a8-4a3d-9f69-da0e05bb242c";
-            var advertsForUser = await _advertTestedRepository.GetAllForUserAsync(userId);
+            var advertsForUser = await _advertTestedRepository.GetAllWithUserAsync(userId);
         }
 
         [Fact]

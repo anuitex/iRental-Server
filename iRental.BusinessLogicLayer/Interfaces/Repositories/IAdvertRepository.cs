@@ -9,6 +9,7 @@ namespace iRental.BusinessLogicLayer.Interfaces.Repositories
 {
     public interface IAdvertRepository : IBaseRepository<AdvertEntity>
     {
-        Task<IEnumerable<AdvertEntity>> GetAllForUserAsync(string userId);
+        Task<IEnumerable<AdvertEntity>> GetAllWithoutUserAsync(string userId);
+        Task<IEnumerable<AdvertEntity>> GetAllWithUserAsync(string userId);
     }
 }

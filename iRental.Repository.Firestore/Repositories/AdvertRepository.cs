@@ -2,6 +2,7 @@
 using iRental.BusinessLogicLayer.Interfaces.Repositories;
 using iRental.Common.Constant;
 using iRental.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,8 +14,34 @@ namespace iRental.Repository.Firestore.Repositories
         {
         }
 
-        public async Task<IEnumerable<AdvertEntity>> GetAllForUserAsync(string userId)
+        public async Task<IEnumerable<AdvertEntity>> GetAllWithoutUserAsync(string userId)
         {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException("advertId");
+            }
+
+            QuerySnapshot allItemsQuerySnapshot = await _dbContext.Collection(_collectionName).GetSnapshotAsync();
+
+            List<AdvertEntity> itemsResult = new List<AdvertEntity>();
+            foreach (DocumentSnapshot documentSnapshot in allItemsQuerySnapshot.Documents)
+            {
+                var advertEntity = documentSnapshot.ConvertTo<AdvertEntity>();
+                if (!advertEntity.UserId.Equals(userId))
+                {
+                    itemsResult.Add(advertEntity);
+                }
+            }
+            return itemsResult;
+        }
+
+        public async Task<IEnumerable<AdvertEntity>> GetAllWithUserAsync(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new ArgumentNullException("advertId");
+            }
+
             QuerySnapshot allItemsQuerySnapshot = await _dbContext.Collection(_collectionName)
                 .WhereEqualTo(nameof(AdvertEntity.UserId), userId)
                 .GetSnapshotAsync();

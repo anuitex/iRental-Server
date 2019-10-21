@@ -63,7 +63,21 @@ namespace iRental.Client
 
         public async Task DeletePhotoAsync(PhotoEntity photoEntity)
         {
+            if (photoEntity == null)
+            {
+                throw new ArgumentNullException("photoEntity");
+            }
+
             await _storageClient.DeleteObjectAsync(_projectId, objectName: photoEntity.BucketPath);
+        }
+
+        public async Task DeletePhotoAsync(string bucketPath)
+        {
+            if (string.IsNullOrWhiteSpace(bucketPath))
+            {
+                throw new ArgumentNullException("bucketPath");
+            }
+            await _storageClient.DeleteObjectAsync(_projectId, objectName: bucketPath);
         }
     }
 }

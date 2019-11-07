@@ -17,8 +17,6 @@ namespace iRental.Domain.Entities.User
         string PhoneNumber { get; set; }
 
         //[NotMapped]
-        //string FullName { get; set; }
-        //[NotMapped]
-        //string Location { get; set; }
+        //string FullName { get; s
     }
 }

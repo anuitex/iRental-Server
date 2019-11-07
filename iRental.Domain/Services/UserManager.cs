@@ -28,6 +28,7 @@ namespace iRental.Domain.Services
 
         public async Task LogOut()
         {
+            throw new NotImplementedException();
         }
     }
 }

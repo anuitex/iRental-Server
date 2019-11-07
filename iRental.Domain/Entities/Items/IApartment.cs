@@ -11,7 +11,7 @@ namespace iRental.Domain.Entities.Items
         string Area { get; set; }
         DateTime StartActivityPeriodUTC { get; set; }
         DateTime EndActivityPeriodUTC { get; set; }
-        IEnumerable<DateTime> DaysOfWeek { get; set; } //TODO: check request property
+        IEnumerable<DayOfWeek> DaysOfWeek { get; set; } //TODO: check request property
         string Location { get; set; } //TODO:  check what property need for google
 
         int RoomsCount { get; set; }
